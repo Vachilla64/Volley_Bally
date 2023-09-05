@@ -1,0 +1,26 @@
+body{
+    position: fixed;
+    user-select: none;
+    margin:0px;
+    padding: 0px;
+    background-color:white;
+}
+
+#Main_Canvas_Container{
+    position: fixed;
+    align-items:center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#Caldro_Canvas{
+    position: fixed;
+    user-select: none;
+    user-zoom: none;
+    -webkit-user-drag: none;
+    /* background-color: ; */
+}
+/* 
+aliceblue
+darkslategry
+fuchisia */
