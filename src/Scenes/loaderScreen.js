@@ -1,5 +1,5 @@
 
-const loaderScreen = new Scene()
+const loaderScreen = new Scene("loaderScreen")
 loaderScreen.bgAlpha = 0
 loaderScreen.postLoadTime = 0
 loaderScreen.showingProgress = false

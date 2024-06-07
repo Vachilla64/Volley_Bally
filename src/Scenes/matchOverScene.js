@@ -1,4 +1,4 @@
-let matchOverScene = new Scene("Match Over");
+let matchOverScene = new Scene("matchOverScene");
 matchOverScene.hasPhoto = false;
 let moc = matchOverScene.camera
 moc.target.active - true

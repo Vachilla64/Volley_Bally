@@ -1,5 +1,5 @@
 
-let tutorialScene = new Scene();
+let tutorialScene = new Scene("tutorialScene");
 tutorialScene.pauseable = true
 tutorialScene.boddies = [
     ground, clare

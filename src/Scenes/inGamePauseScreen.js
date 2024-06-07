@@ -1,5 +1,5 @@
 
-const inGamePauseScreen = new Scene()
+const inGamePauseScreen = new Scene("inGamePauseScreen")
 let pauseSceneCam = new camera();
 inGamePauseScreen.canvas = document.createElement("canvas")
 inGamePauseScreen.canvasContext = inGamePauseScreen.canvas.getContext("2d");

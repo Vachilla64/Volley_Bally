@@ -8,7 +8,7 @@ let offSb = new DOMaudioManager()
 
 
 
-const trailerScreen = new Scene();
+const trailerScreen = new Scene("trailerScreen");
 trailerScreen.camera = new camera();
 trailerScreen.playing = false
 trailerScreen.showingDetails = false
@@ -47,6 +47,7 @@ startTrailer.onclick = () => {
         qsong = offSb.get("question")
         GameKeys.hitKey("s")
     }
+    offSb.fileSrcPrefix = "res/"
     offSb.add("trailer", "audio/Orchestra_on_the_beach.mp3")
     offSb.add("question", "audio/question_asking.mp3")
     // offSb.add("trailer", "audio/OOTB_stripped.mp3")
@@ -223,7 +224,7 @@ let trailerAG = new AnimationGraph();
         gustavo.status.mainFeeling = "Jump"
     })
     trailerAG.addAnimationNode(15.7, 12, () => {
-        let wsh = sb.get("woosh", true)
+        let wsh = sfxSB.get("woosh", true)
         wsh.setPlaybackRate(0.7)
         wsh.play()
     })
@@ -487,7 +488,6 @@ trailerScreen.update = function (deltatime) {
     teamManager.updateControlledPlayers();
     teamManager.playersPlay()
     world.step(deltatime, 10)
-    mainGame.scoreGazer.update(deltatime)
     mainGame.currentLocation.whileHere();
     beachBall.rotationalVelocity = Math.abs(beachBall.linearVelocity.x) < 18 ? 0 : beachBall.linearVelocity.x;
 

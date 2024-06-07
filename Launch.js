@@ -11,9 +11,12 @@ function onCaldroLoad(){
     // _lauchAudioTests()
 }
 
+_loadScript(
+    "../Caldro/Setup_Caldro.js",
+)
 {
     let path_suffix = "../"
-    _loadScript(`${path_suffix}Caldro/Setup_Caldro.js`);
+    // _loadScript(`${path_suffix}Caldro/Setup_Caldro.js`);
 }
 
 

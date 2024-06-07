@@ -1,4 +1,4 @@
-let cardScene = new Scene();
+let cardScene = new Scene("cardScene");
 
 
 

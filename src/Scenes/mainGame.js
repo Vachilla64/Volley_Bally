@@ -1,5 +1,5 @@
 
-const mainGame = new Scene();
+const mainGame = new Scene("mainGame");
 mainGame.camera = gameCam;
 gameCam.Frame.visible = true
 gameCam.Frame.visibleFrames = [1, 3]
@@ -338,6 +338,8 @@ maingameClosingScreenTasks.addAnimationNode(16.4, 1, () => {
     let h = preRenderingCanvas.height;
     let shotID = "endShot"
     shot(shotID, 225, 90, 500, 281.25);
+    place(gameCam.target.position, new Lvector2D())
+    
     outPs.particleSource(0, 0, 0, 0, 0, 0, [0, 0], 0.4625, null, 1, 5, (particle)=>{
         // CaldroCIM.draw(Caldro.renderer.context, "shot", particle.x, particle.y, w*particle.sice, h*particle.size, true, particle.angle)
         CaldroCIM.draw(Caldro.renderer.context, particle.shotID, particle.x, particle.y, w*particle.size, h*particle.size, true, particle.angle)

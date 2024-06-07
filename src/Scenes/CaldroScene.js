@@ -1,4 +1,4 @@
-const caldroScene = new Scene();
+const caldroScene = new Scene("caldroScene");
 let csPs = new particleSystem();
 let csCam = new camera();
 let midX = -pw

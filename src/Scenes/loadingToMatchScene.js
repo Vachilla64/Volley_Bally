@@ -1,6 +1,6 @@
 
 
-const loadingToMatchScene = new Scene();
+const loadingToMatchScene = new Scene("loadingToMatchScene");
 loadingToMatchScene.tips = new Array();
 loadingToMatchScene.addTip = (tipTitle, tipText) => {
     loadingToMatchScene.tips.push({

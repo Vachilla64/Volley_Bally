@@ -1,4 +1,4 @@
-let lab = new Scene("Testing Grounds");
+let lab = new Scene("lab");
 let lcam = lab.camera;
 lcam.Frame.visible = true
 

@@ -1,4 +1,4 @@
-const caldroTitleScreenGrey = new Scene()
+const caldroTitleScreenGrey = new Scene("caldroTitleScreenGrey")
 let ccam = caldroTitleScreenGrey.camera
 ccam.Frame.visible = true
 ccam.Frame.visibleFrames = [1, 3]

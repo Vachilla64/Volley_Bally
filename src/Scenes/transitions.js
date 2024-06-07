@@ -11,12 +11,12 @@ let loadToCaldroTransition = new TransitionScreen(
     },
     () => {
         // SceneManager.startScene(caldroScene)
-        SceneManager.startScene(mainScreen)
+        // SceneManager.startScene(mainScreen)
 
         // SceneManager.startScene(menuScene)  
         // SceneManager.startScene(lab)
         // SceneManager.startScene(cardScene)
-        // SceneManager.startScene(trailerScreen)
+        SceneManager.startScene(trailerScreen)
     },
     (time) => {
         // Rect(0, 0, pw, ph, "white")
