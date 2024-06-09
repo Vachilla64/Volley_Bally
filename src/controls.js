@@ -1,7 +1,12 @@
 
 GameKeys.addKey(-1, 'h', () => {
-    mainGame.matchTime.setTime(timeToSeconds(1000,10))
+    mainGame.matchTime.setTime(timeToSeconds(1000, 10))
     SceneManager.startScene(cardScene)
+})
+
+GameKeys.addKey(0, "0", function () {
+    menuScene.match = new Match(timeToSeconds(0, 3), [may], [abby], 10, snowBeach)
+    SceneManager.startScene(mainGame)
 })
 
 GameKeys.addKey(0, "1", function () {
@@ -113,7 +118,7 @@ function pointStartEvent() {
             if (check) {
                 // let data = button.data['audio']
                 // let sb = data.audioManager
-                
+
                 break;
             }
         }

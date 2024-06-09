@@ -643,9 +643,9 @@ setPlayergodMode(abby,
             }, "grow fadeout")
             clearDoTask("go to ally domain")
             teamManager.setTeam(abby.newAlly, abby.newAllyOldTeam)
-            console.log(vecMath.copy(ally.restingPosition))
+            // console.log(vecMath.copy(ally.restingPosition))
             abby.newAlly.restingPosition.copy(abby.newAllyOldRestingPosition)
-            console.log(vecMath.copy(ally.restingPosition))
+            // console.log(vecMath.copy(ally.restingPosition))
 
             abby.newAlly = null
             abby.newAllyOldTeam = null

@@ -45,7 +45,7 @@ tripodCamera.staticFriction = new Lvector2D(2, 0)
 
 let tripdCameraSpaceHogger = physics.createBoxBody(new Lvector2D(550, 37.5), 70, 75, 0.2, 1, true)
 tripdCameraSpaceHogger.onCollisionStart = (body) => {
-    if(body == tripodCamera){
+    if (body == tripodCamera) {
         world.removeBody(tripdCameraSpaceHogger)
     }
 }
@@ -118,30 +118,70 @@ beachBall.drawing = function () {
     } else {
         CaldroSSM.draw("beachball", this.position.x, this.position.y, this.radius * 2, this.radius * 2, true, this.angle)
     }
-    
-    
+
+
 }
 beachBall.onCollisionStart = function (body, collision) {
     let rvel = collision.relativeVelocity.magnitude()
     // console.log(rvel)
-    let volume = clip(scaleTo(rvel, 0, 600, 0.3, 1), 0, Infinity)*2
-    if(rvel > 800){
+    let volume = clip(scaleTo(rvel, 0, 600, 0.3, 1), 0, Infinity) * 2
+    if (rvel > 800) {
     }
-    if(rvel > 700){
+    if (rvel > 700) {
         sfxSB.play(choose(["hit_hard1", "hit_hard2"]), true, 0, 0, volume)
     } else {
         sfxSB.play(choose(["hit1", "hit2"]), true, 0, 0, volume)
     }
-    
+
     // sfxSB.play("boop")
     // console.log(collision)
     if (!teamManager.playingGame || !teamManager.recordingScores) return;
+    let lasttouchedPlayer = beachBall.touchedPlayers[beachBall.touchedPlayers.length - 1];
+    let ownGoal = false
+    let aabb = body.getAABB();
+    let color = "transparent"
+    if (lasttouchedPlayer) {
+        ownGoal = (teamManager.isOnSide(beachBall.position, lasttouchedPlayer.team));
+        color = lasttouchedPlayer.color
+        if (color.sumTotal() > 700) {
+            color = stylizedColors["outlines"]
+        }
+    }
     if (body.tag == "ground") {
-        let aabb = body.getAABB();
+        if (beachBall.isGodBall && !ownGoal) {
+            beachBall.isGodBall = false;
+            
+            // FX
+            timeoutTask(() => {
+                mainGame.quickImpactPause();
+            }, 100, true)
+            sfxSB.play("E", true)
+            sfxSB.play("ballHitGround", true)
+            sfxSB.play("hit_impactAir", true, 0, 0, volume * 3)
+
+            // GM
+            if (lasttouchedPlayer) ENTERGODMODE(lasttouchedPlayer)
+
+            // GG
+            inPs.particleSource(beachBall.position.x, aabb.min.y, this.radius * 2, 10, [-500, 500], [-250, -10], [[0, 0], [2, 2]], 100, stylizedColors[choose(["ablue", "sand"])], 5, 1, function (particle) {
+                textOutline(particle.size * 0.2, color)
+                txt("GG", particle.x, particle.y, font(particle.size), "white", 0, "center")
+                textOutline(0)
+                // triangle(particle.x, particle.y, particle.size, "red", particle.drawingAngle)
+            }, "shrink", function (particle) {
+                particle.drawingAngle = angleBetweenPoints(ORIGIN, new Point2D(particle.xv, particle.yv))
+            })
+            return
+        }
+
+        
+        // normal ball 
+        beachBall.isGodBall = false;
         sfxSB.play("E", true)
         sfxSB.play("ballHitGround", true)
         sfxSB.play("hit_impactAir", true, 0, 0, volume * 3)
         mainGame.quickImpactPause();
+
         setTimeout(() => {
             sfxSB.play("whistle_lg", true)
         }, randomNumber(100, 150))
@@ -150,15 +190,8 @@ beachBall.onCollisionStart = function (body, collision) {
         } else {
             teamManager.onRightMiss(1000);
         }
+
         // let color = stylizedColors["sand"]
-        let color = "transparent"
-        let lasttouchedPlayer = beachBall.touchedPlayers[beachBall.touchedPlayers.length - 1]
-        if (lasttouchedPlayer) {
-            color = lasttouchedPlayer.color
-            if (color.sumTotal() > 700) {
-                color = stylizedColors["outlines"]
-            }
-        }
         // inPs.particleSource(beachBall.position.x, aabb.min.y, this.radius * 2, 10, [-50, 50], [-10, -50], [0, 0], 100, "white", 20, 1, "line", "fadeout shrink")
         // inPs.particleSource(beachBall.position.x, aabb.min.y, this.radius * 2, 10, [-50, 50], [-10, -50], [0, 0], 100, stylizedColors[choose(["ablue", "sand"])], 20, 1, function (particle) {
         inPs.particleSource(beachBall.position.x, aabb.min.y, this.radius * 2, 10, [-500, 500], [-250, -10], [[0, 0], [2, 2]], 100, stylizedColors[choose(["ablue", "sand"])], 5, 1, function (particle) {
@@ -172,17 +205,17 @@ beachBall.onCollisionStart = function (body, collision) {
     } else {
         if (body.tag == 'player') {
             beachBall.recoredPlayerTouch(body)
-            if(chance(80))
-            // sfxSB.play("hit_air1", true, 0, 0, (1))
-            if(chance(80) & rvel > 500 && beachBall.position.y < -100){
-                // idk
-            }
+            if (chance(80))
+                // sfxSB.play("hit_air1", true, 0, 0, (1))
+                if (chance(80) & rvel > 500 && beachBall.position.y < -100) {
+                    // idk
+                }
         }
-        if(body == netStick  && rvel > 159) {
+        if (body == netStick && rvel > 159) {
             sfxSB.play("hit_thick1", true, 0, 0, volume)
         }
-        if(body == net) {
-            sfxSB.play(choose(["hit_soft1", "hit_air1"]), true, 0, 0, volume*3)
+        if (body == net) {
+            sfxSB.play(choose(["hit_soft1", "hit_air1"]), true, 0, 0, volume * 3)
         }
     }
 }
