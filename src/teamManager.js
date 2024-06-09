@@ -1,4 +1,3 @@
-
 const teamManager = {
     winner: 0,
     RoundWinner: 0,
@@ -22,6 +21,19 @@ const teamManager = {
     winningTeam: new Array(),
     operationWidth: 400,
     proccessingControls: true,
+    activeMatch: null,
+    setupMatch(match){
+        teamManager.players.length = 0;
+        mainGame.matchTime.setTime(match.time)
+        match.team1.forEach((player) => { teamManager.addPlayer(player, 1) })
+        match.team2.forEach((player) => { teamManager.addPlayer(player, 2) })
+        teamManager.sessionWinningScore = match.maxScore
+        teamManager.setControlledPlayer(match.controlledPlayer)
+        this.activeMatch = match
+    },
+    endMatch(){
+        this.activeMatch = null;
+    },
     setAllPlayerFellings(feeling, main = true) {
         let peeps = new Array();
         for (let player of this.players) {
@@ -392,7 +404,7 @@ const teamManager = {
         player.team = team;
     },
     addPlayer(player, team) {
-        player.team = team;
+        if(team) player.team = team;
         if (!this.players.includes(player)) {
             this.players.push(player);
         }

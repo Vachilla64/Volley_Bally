@@ -10,13 +10,15 @@ let loadToCaldroTransition = new TransitionScreen(
         alpha(1)
     },
     () => {
-        // SceneManager.startScene(caldroScene)
+        menuScene.match = new Match(timeToSeconds(0, 3), [may], [abby], 10, snowBeach)
+        SceneManager.startScene(mainGame) 
+        // SceneManager.startScene(caldroScene) 
         // SceneManager.startScene(mainScreen)
 
         // SceneManager.startScene(menuScene)  
         // SceneManager.startScene(lab)
         // SceneManager.startScene(cardScene)
-        SceneManager.startScene(trailerScreen)
+        // SceneManager.startScene(trailerScreen)
     },
     (time) => {
         // Rect(0, 0, pw, ph, "white")
@@ -191,13 +193,17 @@ let mainScreenToMenuScreen = new TransitionScreen(
     (time)=>{
         let cam = mainScreen.camera
         cam.y -= 100 * Caldro.time.deltatime
-        alpha(scaleTo(time, 0, 0.9, 0, 1))
-        Rect(cam.x, cam.y, 1000, 1000)
+        alpha(scaleTo(time, 0, 0.7, 0, 1))
+        Rect(cam.x, cam.y, 1000, 1000, stylizedColors['deepblue'])
         alpha(1)
     }, 
-    ()=>[
-        SceneManager.startScene(menuScene)
-    ],
+    ()=>{
+        mainScreenToMenuScreen.pause();
+        SceneManager.startScene(menuScene);
+        setTimeout(() => {
+            mainScreenToMenuScreen.resume();
+        }, 1000);
+    },
     (time)=>{
         let cam = menuScene.camera
         if(cam.y < 450){
@@ -205,8 +211,8 @@ let mainScreenToMenuScreen = new TransitionScreen(
         } else {
             cam.y = 450;
         }
-        alpha(clip(scaleTo(time, 0, 0.9, 1, 0), 0, 1))
-        Rect(cam.x, cam.y, 1000, 1000)
+        alpha(clip(scaleTo(time, 0, 0.7, 1, 0), 0, 1))
+        Rect(cam.x, cam.y, 1000, 1000, stylizedColors['deepblue'])
         alpha(1)
     }, 
     ()=>{
@@ -214,7 +220,7 @@ let mainScreenToMenuScreen = new TransitionScreen(
         Caldro.events.handleKeyboardEvents = true;
         Caldro.events.handleMouseEvents = true;
         Caldro.events.handleTouchEvents = true;
-    }, 1
+    }, 2, 1
 )
 
 let menuScreenToMainScreen = new TransitionScreen(

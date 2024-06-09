@@ -2,6 +2,7 @@
 
 let menuCam = new camera();
 const menuScene = new Scene("menuScene")
+menuScene.match = null;
 menuScene.buttons = new Array();
 menuScene.cameraTarget = new Point2D(0, 0)
 class camPoint2D {
@@ -323,12 +324,19 @@ confirmMatch.drawing = () => {
 }
 
 function setupMatch() {
-    teamManager.sessionWinningScore = menuScene.matchInfo.topScore
-    mainGame.defaultLocation = menuScene.matchInfo.location
-    teamManager.players.length = 0;
-    menuScene.team1.forEach((player) => { teamManager.players.push(player); teamManager.setTeam(player, 1) })
-    menuScene.team2.forEach((player) => { teamManager.players.push(player); teamManager.setTeam(player, 2) })
-    teamManager.setControlledPlayer(menuScene.chosenPlayer)
+    // teamManager.sessionWinningScore = menuScene.matchInfo.topScore
+    // mainGame.defaultLocation = menuScene.matchInfo.location
+    // teamManager.players.length = 0;
+    // menuScene.team1.forEach((player) => { teamManager.players.push(player); teamManager.setTeam(player, 1) })
+    // menuScene.team2.forEach((player) => { teamManager.players.push(player); teamManager.setTeam(player, 2) })
+    // teamManager.setControlledPlayer(menuScene.chosenPlayer)
+    menuScene.match = new Match(timeToSeconds(0, menuScene.matchInfo.matchTime),
+                                menuScene.team1,
+                                menuScene.team2, 
+                                menuScene.matchInfo.topScore,
+                                menuScene.matchInfo.location,
+                                menuScene.chosenPlayer,
+    )
 }
 
 menuScene.matchInfo = {
@@ -338,7 +346,7 @@ menuScene.matchInfo = {
 }
 
 confirmMatch.onclick = () => {
-    musicSB.play("anticipation")
+    musicSB.play("anticipation", false, 0, 0.4)
     setupMatch()
     menuScene.prepareGamePreviewShot();
     menuScene.setCamTarget(mcTargetP2)

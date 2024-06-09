@@ -16,7 +16,7 @@ body{
 #Caldro_Canvas{
     position: fixed;
     user-select: none;
-    user-zoom: none;
+    zoom: none;
     -webkit-user-drag: none;
     /* background-color: ; */
 }

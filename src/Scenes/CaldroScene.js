@@ -41,7 +41,7 @@ caldroScene.onUnload = () => {
 }
 caldroScene.update = (deltatime) => {
     if (caldroScene.elapsedTime >= 4.5) {
-        SceneManager.startScene(menuScene)
+        SceneManager.startScene(mainScreen)
     }
 }
 caldroScene.render = () => {

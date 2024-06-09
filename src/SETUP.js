@@ -268,6 +268,7 @@ var stylizedColors = new Array();
 stylizedColors["yellow"] = "#cddb8d"
 stylizedColors["outlines"] = "#0f141e"
 stylizedColors["ablue"] = "#72bfd2"
+stylizedColors["deepblue"] = "#436999"
 stylizedColors["sand"] = "#cddb8a"
 stylizedColors["softOrange"] = "#dc8942"
 stylizedColors["lighOrange"] = "#eac06e"

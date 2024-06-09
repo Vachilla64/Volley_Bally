@@ -453,6 +453,17 @@ mainGame.setupMatchArea = function () {
     inPs.clearParticles();
 }
 
+class Match{
+    constructor(time, team1, team2, maxScore, location, player){
+        this.time = time;
+        this.team1 = team1;
+        this.team2 = team2;
+        this.maxScore = maxScore;
+        this.location = location;
+        this.controlledPlayer = player
+    }
+}
+
 mainGame.onLoad = function () {
 
     // resetting stuff
@@ -487,9 +498,12 @@ mainGame.onLoad = function () {
     for (let body of mainGame.physicsBodies) {
         world.addBody(body)
     }
-    mainGame.matchTime.setTime(timeToSeconds(0, menuScene.matchInfo.matchTime))
-    menuScene.team1.forEach((player) => { teamManager.setTeam(player, 1) })
-    menuScene.team2.forEach((player) => { teamManager.setTeam(player, 2) })
+
+    teamManager.setupMatch(menuScene.match);
+    mainGame.setDefaultLoction(teamManager.activeMatch.location)
+    // mainGame.matchTime.setTime(timeToSeconds(0, menuScene.matchInfo.matchTime))
+    // menuScene.team1.forEach((player) => { teamManager.setTeam(player, 1) })
+    // menuScene.team2.forEach((player) => { teamManager.setTeam(player, 2) })
     
     teamManager.initPlayers();
     console.log(teamManager.setAllPlayerFellings("", true))
