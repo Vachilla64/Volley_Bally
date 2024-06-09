@@ -270,6 +270,7 @@ const teamManager = {
     },
     onSessionWon(teamNumber) {
         this.recordingScores = false
+        beachBall.godBall(false);
         musicSB.pause("mayGM")
         musicSB.pause("kenGM")
         musicSB.pause("bg_music");
@@ -286,8 +287,24 @@ const teamManager = {
             }
         }
     },
+    getCurrentHighestScore(){
+        return Math.max(this.team1Score, this.team2Score);
+    },
     serveBall(serveDelay = 2000, onRemoveBall = NULLFUNCTION, onAddBall = NULLFUNCTION) {
         if (!this.playingGame) return;
+        let match = teamManager.activeMatch;
+        let willBeGodBall = false
+        if(match.allowGodMode){
+            // let threshold = limit(Math.round(match.maxScore*0.7), 7, 15);
+            let threshold = match.godBallThreshold
+            if((teamManager.team1Score+teamManager.team2Score) > threshold){
+                console.log("checked to get gball")
+                if(chance(match.godBallOdds)){
+                    willBeGodBall = true;
+                }
+            }
+        }
+
         let manager = this
         if (teamManager.godModePlayer) {
             serveDelay = 700
@@ -317,6 +334,9 @@ const teamManager = {
             })
         }
         place(beachBall.position, new Lvector2D(0, -150))
+        if(willBeGodBall){
+            beachBall.godBall(true);
+        }
         timeoutTask(() => {
             if (world.containsBody(beachBall)) return;
             sfxSB.play("poup", true)

@@ -5,8 +5,9 @@ GameKeys.addKey(-1, 'h', () => {
 })
 
 GameKeys.addKey(0, "0", function () {
-    menuScene.match = new Match(timeToSeconds(0, 3), [may], [abby], 10, snowBeach, may)
+    menuScene.match = new Match(timeToSeconds(0, 3), [may], [abby], 20, snowBeach, may)
     SceneManager.startScene(mainGame)
+    teamManager.team2Score = 11
 })
 
 GameKeys.addKey(0, "1", function () {

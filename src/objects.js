@@ -164,11 +164,11 @@ beachBall.onCollisionStart = function (body, collision) {
                 gBallWinner = beachBall.touchedPlayers.find((player) => {
                     return player.team != lasttouchedPlayer.team
                 })
-                if(!gBallWinner){ // if only one player has touched the ball before the godmode ball appears
+                if (!gBallWinner) { // if only one player has touched the ball before the godmode ball appears
                     let opposingTeam;
-                    if(lasttouchedPlayer.team == 1){
+                    if (lasttouchedPlayer.team == 1) {
                         opposingTeam = 2
-                    } else if (lasttouchedPlayer.team == 2){
+                    } else if (lasttouchedPlayer.team == 2) {
                         opposingTeam = 1
                     }
                     gBallWinner = teamManager.getTeam(opposingTeam)[0]
@@ -253,7 +253,16 @@ beachBall.recoredPlayerTouch = (player) => {
         beachBall.touchedPlayers.unshift(body)
     }
 }
-[].pop()
+beachBall.godBall = (bool) => {
+    if (bool) {
+        console.log("tried to enter godmode automatically")
+        if (!teamManager.godModePlayer) {
+            beachBall.isGodBall = true;
+        }
+    } else {
+        beachBall.isGodBall = false;
+    }
+}
 
 let playerEnteredTrigger = physics.createBoxBody(new Lvector2D(-250, -100), 100, 350, 1, 1, true)
 playerEnteredTrigger.isTrigger = true;
