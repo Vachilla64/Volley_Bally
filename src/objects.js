@@ -69,9 +69,6 @@ beachBall.dynamicFriction = new Lvector2D(0.1, 0.1)
 beachBall.touchedPlayers = new Array();
 beachBall.isGodBall = false;
 beachBall.tag = "beachball"
-beachBall.getLastTouchedPlayer = () => {
-    return beachBall.touchedPlayers[beachBall.touchedPlayers.length - 1]
-}
 beachBall.drawing = function () {
     drawBodyShadowOnGround(this, 100)
     beachBall.angularVelocity = beachBall.linearVelocity.x;
@@ -136,7 +133,7 @@ beachBall.onCollisionStart = function (body, collision) {
     // sfxSB.play("boop")
     // console.log(collision)
     if (!teamManager.playingGame || !teamManager.recordingScores) return;
-    let lasttouchedPlayer = beachBall.touchedPlayers[beachBall.touchedPlayers.length - 1];
+    let lasttouchedPlayer = beachBall.getLastTouchedPlayer();
     let ownGoal = false
     let aabb = body.getAABB();
     let color = "transparent"
@@ -148,19 +145,39 @@ beachBall.onCollisionStart = function (body, collision) {
         }
     }
     if (body.tag == "ground") {
-        if (beachBall.isGodBall && !ownGoal) {
+        if (beachBall.isGodBall) {
             beachBall.isGodBall = false;
-            
-            // FX
+
+            //pre-logic
             timeoutTask(() => {
                 mainGame.quickImpactPause();
             }, 100, true)
+
+            // FX
             sfxSB.play("E", true)
             sfxSB.play("ballHitGround", true)
             sfxSB.play("hit_impactAir", true, 0, 0, volume * 3)
 
             // GM
-            if (lasttouchedPlayer) ENTERGODMODE(lasttouchedPlayer)
+            let gBallWinner = lasttouchedPlayer;
+            if (ownGoal) { // deal with an owngoal by giving gball to the opposing team
+                gBallWinner = beachBall.touchedPlayers.find((player) => {
+                    return player.team != lasttouchedPlayer.team
+                })
+                if(!gBallWinner){ // if only one player has touched the ball before the godmode ball appears
+                    let opposingTeam;
+                    if(lasttouchedPlayer.team == 1){
+                        opposingTeam = 2
+                    } else if (lasttouchedPlayer.team == 2){
+                        opposingTeam = 1
+                    }
+                    gBallWinner = teamManager.getTeam(opposingTeam)[0]
+                }
+            }
+            if (gBallWinner) {
+                ENTERGODMODE(gBallWinner)
+                teamManager.serveBall(4000)
+            }
 
             // GG
             inPs.particleSource(beachBall.position.x, aabb.min.y, this.radius * 2, 10, [-500, 500], [-250, -10], [[0, 0], [2, 2]], 100, stylizedColors[choose(["ablue", "sand"])], 5, 1, function (particle) {
@@ -174,7 +191,7 @@ beachBall.onCollisionStart = function (body, collision) {
             return
         }
 
-        
+
         // normal ball 
         beachBall.isGodBall = false;
         sfxSB.play("E", true)
@@ -203,7 +220,7 @@ beachBall.onCollisionStart = function (body, collision) {
             particle.drawingAngle = angleBetweenPoints(ORIGIN, new Point2D(particle.xv, particle.yv))
         })
     } else {
-        if (body.tag == 'player') {
+        if (body.hasTag("player")) {
             beachBall.recoredPlayerTouch(body)
             if (chance(80))
                 // sfxSB.play("hit_air1", true, 0, 0, (1))
@@ -219,22 +236,24 @@ beachBall.onCollisionStart = function (body, collision) {
         }
     }
 }
+beachBall.getLastTouchedPlayer = () => {
+    return beachBall.touchedPlayers[0]
+}
 beachBall.recoredPlayerTouch = (player) => {
     let body = player;
-    let lastBody = beachBall.touchedPlayers[beachBall.touchedPlayers.length - 1]
+    let lastBody = beachBall.getLastTouchedPlayer()
     if (lastBody) {
         if (body != lastBody) {
-            beachBall.touchedPlayers.push(body)
-            if (beachBall.touchedPlayers.length > 4) {
-                beachBall.touchedPlayers.shift();
+            beachBall.touchedPlayers.unshift(body)
+            if (beachBall.touchedPlayers.length > 6) {
+                beachBall.touchedPlayers.pop();
             }
         }
     } else {
-        beachBall.touchedPlayers.push(body)
+        beachBall.touchedPlayers.unshift(body)
     }
 }
-
-
+[].pop()
 
 let playerEnteredTrigger = physics.createBoxBody(new Lvector2D(-250, -100), 100, 350, 1, 1, true)
 playerEnteredTrigger.isTrigger = true;

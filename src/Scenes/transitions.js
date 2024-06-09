@@ -10,8 +10,7 @@ let loadToCaldroTransition = new TransitionScreen(
         alpha(1)
     },
     () => {
-        menuScene.match = new Match(timeToSeconds(0, 3), [may], [abby], 10, snowBeach)
-        SceneManager.startScene(mainGame) 
+        GameKeys.hitKey("0")
         // SceneManager.startScene(caldroScene) 
         // SceneManager.startScene(mainScreen)
 

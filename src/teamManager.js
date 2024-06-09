@@ -70,6 +70,13 @@ const teamManager = {
             return player.team == 2
         })
     },
+    getTeam(team){
+        if(team == 1){
+            return this.team1;
+        } else if (team == 2){
+            return this.team2;
+        }
+    },
     onLeftMiss(delay = 0, onJudge = NULLFUNCTION, onServeballStart = NULLFUNCTION, onServeballEnd = NULLFUNCTION) {
         if (!this.recordingScores) return;
         sfxSB.play("whistle_lg")
@@ -316,7 +323,7 @@ const teamManager = {
             sfxSB.play("ballcome", true)
             manager.recordingScores = true
             manager.currentRoundTime = 0;
-            beachBall.recoredPlayerTouch(null)
+            // beachBall.recoredPlayerTouch(null)
             world.addBody(beachBall)
             place(beachBall.position, new Lvector2D(0, -150));
             for (let angle = 0; angle <= 360; angle += 18) {
