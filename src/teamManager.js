@@ -234,12 +234,12 @@ const teamManager = {
 
         let foul = false
 
-        if (player.team == 1) {
+        if (player.currentTeam == 1) {
             if (player.position.x > netStick.position.x) {
                 teamManager.onLeftMiss(0);
                 foul = true
             }
-        } else if (player.team == 2) {
+        } else if (player.currentTeam == 2) {
             if (player.position.x < netStick.position.x) {
                 teamManager.onRightMiss(0)
                 foul = true
