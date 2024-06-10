@@ -432,14 +432,14 @@ const teamManager = {
     playersPlay() {
         if (!this.playingVolleyball) return;
         for (let person of this.players) {
-            playVolleyball(person, person.team)
+            playVolleyball(person, person.currentTeam)
         }
     },
     setTeam(player, team) {
-        player.team = team;
+        player.setTeam(team, true);
     },
     addPlayer(player, team) {
-        if (team) player.team = team;
+        if (team) player.setTeam(team, true);
         if (!this.players.includes(player)) {
             this.players.push(player);
         }

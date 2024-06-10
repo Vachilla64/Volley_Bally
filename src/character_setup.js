@@ -437,6 +437,7 @@ function movePlayer(player, speed, direction) {
 
 function playVolleyball(body, team = 1) {
     if (world.paused()) return;
+    // Player AI
     if (body === teamManager.controlledPlayer || !body.status.controllable) return;
     let side = team === 1 ? 1 : -1;
     let range = 0.5
@@ -451,7 +452,7 @@ function playVolleyball(body, team = 1) {
             }, "shrink")
         }, true, Infinity, 100)
     } */
-    if (!teamManager.isOnSide(body.position, body.team)) { // about to foul
+    if (!teamManager.isOnSide(body.position, body.team)) { // run to other side if you are about to foul
         let runToRest = new Lvector2D(clip(body.restingPosition.x - body.position.x, -1, 1) * body.moveSpeed * 20 * Caldro.time.deltatime, 0)
         body.addVelocity(runToRest)
     }
