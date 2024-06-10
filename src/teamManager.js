@@ -22,7 +22,7 @@ const teamManager = {
     operationWidth: 400,
     proccessingControls: true,
     activeMatch: null,
-    setupMatch(match){
+    setupMatch(match) {
         teamManager.players.length = 0;
         mainGame.matchTime.setTime(match.time)
         match.team1.forEach((player) => { teamManager.addPlayer(player, 1) })
@@ -31,7 +31,7 @@ const teamManager = {
         teamManager.setControlledPlayer(match.controlledPlayer)
         this.activeMatch = match
     },
-    endMatch(){
+    endMatch() {
         this.activeMatch = null;
     },
     setAllPlayerFellings(feeling, main = true) {
@@ -70,12 +70,20 @@ const teamManager = {
             return player.team == 2
         })
     },
-    getTeam(team){
-        if(team == 1){
+    getTeam(team) {
+        if (team == 1) {
             return this.team1;
-        } else if (team == 2){
+        } else if (team == 2) {
             return this.team2;
         }
+    },
+    getOpposingTeam(team) {
+        if (team == 1) {
+            return 2;
+        } else if (team == 2) {
+            return 1;
+        }
+        return 0;
     },
     onLeftMiss(delay = 0, onJudge = NULLFUNCTION, onServeballStart = NULLFUNCTION, onServeballEnd = NULLFUNCTION) {
         if (!this.recordingScores) return;
@@ -90,7 +98,7 @@ const teamManager = {
             let status = person.status
             if (person.team == 1) {
                 status.mainFeeling = status.feeling = "whut";
-                if(status.confused){
+                if (status.confused) {
                     status.ghost = true;
                     phantomed.push(person)
                 }
@@ -110,7 +118,7 @@ const teamManager = {
             }
         }, serveDelay)
 
-        
+
 
         ++this.team2Score;
         this.RoundWinner = 2
@@ -287,19 +295,19 @@ const teamManager = {
             }
         }
     },
-    getCurrentHighestScore(){
+    getCurrentHighestScore() {
         return Math.max(this.team1Score, this.team2Score);
     },
     serveBall(serveDelay = 2000, onRemoveBall = NULLFUNCTION, onAddBall = NULLFUNCTION) {
         if (!this.playingGame) return;
         let match = teamManager.activeMatch;
         let willBeGodBall = false
-        if(match.allowGodMode){
+        if (match.allowGodMode) {
             // let threshold = limit(Math.round(match.maxScore*0.7), 7, 15);
             let threshold = match.godBallThreshold
-            if((teamManager.team1Score+teamManager.team2Score) > threshold){
+            if ((teamManager.team1Score + teamManager.team2Score) > threshold) {
                 console.log("checked to get gball")
-                if(chance(match.godBallOdds)){
+                if (chance(match.godBallOdds)) {
                     willBeGodBall = true;
                 }
             }
@@ -334,7 +342,7 @@ const teamManager = {
             })
         }
         place(beachBall.position, new Lvector2D(0, -150))
-        if(willBeGodBall){
+        if (willBeGodBall) {
             beachBall.godBall(true);
         }
         timeoutTask(() => {
@@ -431,7 +439,7 @@ const teamManager = {
         player.team = team;
     },
     addPlayer(player, team) {
-        if(team) player.team = team;
+        if (team) player.team = team;
         if (!this.players.includes(player)) {
             this.players.push(player);
         }

@@ -10,6 +10,10 @@ GameKeys.addKey(0, "0", function () {
     teamManager.team2Score = 11
 })
 
+GameKeys.addKey(0, "9", function () {
+    ENTERGODMODE(abby)
+})
+
 GameKeys.addKey(0, "1", function () {
     ENTERGODMODE(gustavo)
 })
@@ -84,18 +88,9 @@ GameKeys.addKey(-1, 'x', () => {
     skipCutScene()
 })
 
-
-
 GameKeys.addKey(-1, "b", () => {
-    if (beachBall.isGodBall) {
-        beachBall.isGodBall = false;
-    } else {
-        beachBall.isGodBall = true;
-    }
+    beachBall.godBall(beachBall.isGodBall)
 })
-
-
-
 
 GameKeys.addKey(-1, "v", () => {
     SceneManager.startTransitionScreen(enterIGPSTransition)

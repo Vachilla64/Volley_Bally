@@ -24,7 +24,6 @@ tutorialScene.update = function () {
         if (keyboard.isBeingPressed("right")) { ++dx; }
         if (keyboard.isBeingPressed("up")) { --dy; }
         movePlayer(teamManager.controlledPlayer, teamManager.controlledPlayer.moveSpeed, dx)
-        let body = ground
     }
     world.step(Caldro.time.deltatime)
     zoomAndMove(tutorialScene.camera, clare.position, tutorialScene.camera.zoom, 3)

@@ -51,6 +51,23 @@ function createCharacter(name, color, gender, slickLine, entranceParticles, oops
     player.domain = playerDomain
     player.lookingPoint = beachBall.position
 
+    player.godModeTargetTeam = 0;
+    player.currentTeam = 0;
+    player.team = 0;
+    player.setTeam = (team, isMain = true) => {
+        if (isMain) {
+            player.team = team;
+            player.godModeTargetTeam = teamManager.getOpposingTeam(team);
+        } else {
+            player.currentTeam= team;
+            player.godModeTargetTeam = teamManager.getOpposingTeam(team);
+        }
+    }
+    player.resetTeamTo = (team = 0)=>{
+        player.team = player.currentTeam = team
+        player.godModeTargetTeam = teamManager.getOpposingTeam(team)
+    }
+
     player.onEnterGame = NULLFUNCTION;
     player.drawing = function () {
         let flipX = (player.lookingPoint.x > player.position.x)
@@ -359,8 +376,8 @@ function ENTERGODMODE(player) {
     if (teamManager.godModePlayer) return
     // teamManager.enterGodMode(player)
     teamManager.godModePlayer = player
-    sfxSB.play("woosh")
-    sfxSB.setCurrentTime("woosh", 0.5);
+    sfxSB.play("woosh", false, 0.5)
+    // sfxSB.setCurrentTime("woosh", 0.5);
 
     let bgm = musicSB.get("bg_music")
     let entranceParticles = player.status.entranceParticles
@@ -437,27 +454,27 @@ function playVolleyball(body, team = 1) {
     if (!teamManager.isOnSide(body.position, body.team)) { // about to foul
         let runToRest = new Lvector2D(clip(body.restingPosition.x - body.position.x, -1, 1) * body.moveSpeed * 20 * Caldro.time.deltatime, 0)
         body.addVelocity(runToRest)
-    } 
+    }
     if ((beachBall.position.x * side) < net.position.x) { // ball is on your side
         if (!teamManager.RoundWinner) {
-                if (body.status.avoidingBall) {
-                    if (withinRange(beachBall.position.x, body.position.x - beachBall.radius*3.5, body.position.x + beachBall.radius*3.5)) {
-                        let runDirection = vecMath.invert(vecMath.normalize(vecMath.subtract(beachBall.position, body.position)))
-                        let haste = scaleTo(clip(Math.abs(beachBall.position.x - body.position.x), 0, body.operationWidth / 4), 0, body.operationWidth / 4, 0, 1)
-                        let run = new Lvector2D(runDirection.x * body.moveSpeed * haste, 0)
-                        body.addVelocity(run)
-                    }
-                } else
-                    if (withinRange(body.position.x, body.restingPosition.x - (body.operationWidth * range), body.restingPosition.x + (body.operationWidth * range))) {
-                        let aimPosition = new Lvector2D(beachBall.position.x - 10 * side, beachBall.position.y)
-                        let runDirection = vecMath.normalize(vecMath.subtract(aimPosition, body.position))
-                        let run = new Lvector2D(runDirection.x * body.moveSpeed, 0)
-                        body.addVelocity(run)
-                    } else {
-                        // if your cant touch it, leave it
-                        let runToRest = new Lvector2D(clip(body.restingPosition.x - body.position.x, -1, 1) * body.moveSpeed * 10 * Caldro.time.deltatime, 0)
-                        body.addVelocity(runToRest)
-                    }
+            if (body.status.avoidingBall) {
+                if (withinRange(beachBall.position.x, body.position.x - beachBall.radius * 3.5, body.position.x + beachBall.radius * 3.5)) {
+                    let runDirection = vecMath.invert(vecMath.normalize(vecMath.subtract(beachBall.position, body.position)))
+                    let haste = scaleTo(clip(Math.abs(beachBall.position.x - body.position.x), 0, body.operationWidth / 4), 0, body.operationWidth / 4, 0, 1)
+                    let run = new Lvector2D(runDirection.x * body.moveSpeed * haste, 0)
+                    body.addVelocity(run)
+                }
+            } else
+                if (withinRange(body.position.x, body.restingPosition.x - (body.operationWidth * range), body.restingPosition.x + (body.operationWidth * range))) {
+                    let aimPosition = new Lvector2D(beachBall.position.x - 10 * side, beachBall.position.y)
+                    let runDirection = vecMath.normalize(vecMath.subtract(aimPosition, body.position))
+                    let run = new Lvector2D(runDirection.x * body.moveSpeed, 0)
+                    body.addVelocity(run)
+                } else {
+                    // if your cant touch it, leave it
+                    let runToRest = new Lvector2D(clip(body.restingPosition.x - body.position.x, -1, 1) * body.moveSpeed * 10 * Caldro.time.deltatime, 0)
+                    body.addVelocity(runToRest)
+                }
             if (vecMath.distance(beachBall.position, body.position) < body.radius + beachBall.radius + 20) {
                 jump(body)
             }
