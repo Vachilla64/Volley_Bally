@@ -126,13 +126,13 @@ function createCharacter(name, color, gender, slickLine, entranceParticles, oops
     }
 
     function choosePlayerEdgePoint(player) {
-        let side = player.team == 1 ? 1 : -1
+        let side = player.currentTeam == 1 ? 1 : -1
         let p1 = new Lvector2D(-400 * side, 0);
         let p2 = new Lvector2D(net.position.x * side, 0)
-        if (player.team == 1) {
+        if (player.currentTeam == 1) {
             return player.restingPosition.x < -200 ? p1 : p2
         }
-        else if (player.team == 2) {
+        else if (player.currentTeam == 2) {
             return player.restingPosition.x < 200 ? p2 : p1
         }
     }
@@ -155,7 +155,7 @@ function createCharacter(name, color, gender, slickLine, entranceParticles, oops
             // let teamArray = teamManager["team"+player.team]
             player.status.confused = false;
             // player.isConfusedWith.length = 0;
-            doTask("fjalkff", () => {
+            doTask("fjalkff", () => { // what on earth does thiss do
                 // console.log(p2)
                 choosePlayerEdgePoint(player)
             })
