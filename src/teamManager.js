@@ -49,7 +49,7 @@ const teamManager = {
         mainGame.showinggodModeEntranceEffects = true
         mainGame.edgeBlurColor = player.color
         player.isIngodMode = true;
-        player.onEntergodMode();
+        player.godMode.onEnter();
         this.godModePlayer = player
         audioManager.godModePlayerName = player.name
         gmAudio(may)
@@ -58,7 +58,7 @@ const teamManager = {
         mainGame.showinggodModeEntranceEffects = false
         mainGame.edgeBlurColor = null
         player.isIngodMode = false;
-        player.onLeavegodMode();
+        player.godMode.onLeave();
         this.godModePlayer = null;
         audioManager.godModePlayerName = null;
     },
@@ -407,7 +407,7 @@ const teamManager = {
             }
 
             if (!world.paused() && time > 2.5) {
-                this.godModePlayer.duringgodMode(time);
+                this.godModePlayer.godMode.during(time);
             }
         }
         this.playerRePosition();
@@ -435,11 +435,11 @@ const teamManager = {
             playVolleyball(person, person.currentTeam)
         }
     },
-    setTeam(player, team) {
-        player.setTeam(team, true);
+    setTeam(player, team, isMain = true) {
+        player.setTeam(team, isMain);
     },
     addPlayer(player, team) {
-        if (team) player.setTeam(team, true);
+        if (team) player.resetTeamTo(team);
         if (!this.players.includes(player)) {
             this.players.push(player);
         }

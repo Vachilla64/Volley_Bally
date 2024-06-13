@@ -145,12 +145,7 @@ function createCharacter(name, color, gender, slickLine, entranceParticles, oops
         }
 
         if (teamManager.playingVolleyball) {
-            let teamArray;
-            if (player.team == 1) {
-                teamArray = teamManager.team1
-            } else if (player.team == 2) {
-                teamArray = teamManager.team2
-            }
+            let teamArray = teamManager.getTeam(player.currentTeam);
             // teamArray = [abby, gustavo]
             // let teamArray = teamManager["team"+player.team]
             player.status.confused = false;
@@ -325,6 +320,12 @@ function createCharacter(name, color, gender, slickLine, entranceParticles, oops
         player.nextWalkSound = limit(player.nextWalkSound + 1, 0, walkingSounds.length - 1, 0, 0)
         // console.log(player.nextWalkSound)
     }
+    player.godMode = {
+        onEnter:  ()=>{},
+        during:  ()=>{},
+        onLeave: ()=>{},
+        hostable: true,
+    }
 
     teamManager.allPlayers.push(player)
     return player;
@@ -415,10 +416,11 @@ function ENTERGODMODE(player) {
 }
 
 
-function setPlayergodMode(player, onEnter = NULLFUNCTION, during = NULLFUNCTION, onLeave = NULLFUNCTION) {
-    player.onEntergodMode = onEnter;
-    player.duringgodMode = during;
-    player.onLeavegodMode = onLeave;
+function setPlayergodMode(player, onEnter = NULLFUNCTION, during = NULLFUNCTION, onLeave = NULLFUNCTION, hostable = true) {
+    player.godMode.onEnter = onEnter;
+    player.godMode.during = during;
+    player.godMode.onLeave = onLeave;
+    player.godMode.hostable = hostable
 }
 
 

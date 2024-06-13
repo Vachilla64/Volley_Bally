@@ -332,8 +332,7 @@ SceneManager.postRender = function () {
     }
 
 
-    if (teamManager.playingGame) {
-
+    if (teamManager.playingGame) { // will need to com back here late to add a way to show if the currentTeam of the player is being manipulated
         let team1x = -330
         let team2x = 330
         let team1y = -160
@@ -345,6 +344,7 @@ SceneManager.postRender = function () {
             // if(colorUtils.sumTotal(colorToRGB(player.color)) > 600)
             // outlineCol = stylizedColors["outlines"]
             let outlineCol = stylizedColors["outlines"]
+            alpha(player.team == player.currentTeam?1:0.3)
             shadow(0, stylizedColors["outlines"], 2, 2)
             CaldroSSM.draw(player.name.toLowerCase(), x, y, 40, 40, true, 0, player.gender)
             shadow(0)
@@ -352,7 +352,7 @@ SceneManager.postRender = function () {
             textOutline(fnt * 0.25, outlineCol)
             txt(player.name, x + (22 * (player.team == 2 ? -1 : 1)), y, font(fnt), player.color, 0, player.team == 1 ? "left" : "right")
             textOutline(0)
-
+            alpha(1)
             if (player.team == 1) {
                 team1x += 5
                 team1y += 25

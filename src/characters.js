@@ -170,27 +170,28 @@ setPlayergodMode(may,
     }
 )
 
-gustavo.moveSpeed = 30
 setPlayergodMode(gustavo,
     function () {
 
     },
-    function (time) {
-        if (teamManager.controlledPlayer != gustavo) {
-            doTask("self-positioning", () => {
-                if (gustavo.position.y > -100) {
-                    jump(gustavo)
+    function (time, gPlayer) {
+        if(!gPlayer) gPlayer = gustavo;
+        if (teamManager.controlledPlayer != gPlayer) {
+            doTask("self-positioning"+gPlayer.name, () => {
+                if (gPlayer.position.y > -100) {
+                    jump(gPlayer)
                 }
             }, true, Infinity, randomNumber(100, 200))
         }
-        doTask("gustavoShootsNachoes--yes----nachoes", () => {
+        doTask(gPlayer.name+"&gustavoShootsNachoes--yes----nachoes", () => {
             let pop = sfxSB.get("pop", true)
             pop.setVolume(scaleTo(clip(time, 0, 5), 0, 5, 1, 0.2))
             pop.setPlaybackRate(randomNumber(0.8, 1.2))
             pop.play();
             pop = null;
-            let side = gustavo.team === 1 ? 1 : -1;
-            let nacho = physics.createBoxBody(new Lvector2D(gustavo.position.x + (gustavo.radius + 15) * side, gustavo.position.y), 35, 35, 0.6, 100, false)
+            // let side = gPlayer.team === 1 ? 1 : -1; // this makes a multiplier we add to the direction of the gmode obstacles, defalut will send it to team 2
+            let side = gPlayer.godModeTargetTeam === 1 ? -1 : 1; // this makes a multiplier we add to the direction of the gmode obstacles, defalut will send it to team 2
+            let nacho = physics.createBoxBody(new Lvector2D(gPlayer.position.x + (gPlayer.radius + 15) * side, gPlayer.position.y), 35, 35, 0.6, 100, false)
             let throwForse = new Lvector2D(400 * side, randomNumber(-500, 500))
             nacho.drawing = function () {
                 drawBodyShadowOnGround(this, 100)
@@ -213,14 +214,14 @@ setPlayergodMode(gustavo,
                     world.removeBody(nacho)
                 }
             }
-            nacho.onCollisionContinue = (body) => { 
-                if (body.tag === "nacho" || body == gustavo) return;
-                if (body.team) {
-                    if (body.team == gustavo.team) {
+            nacho.onCollisionContinue = (body) => {
+                if (body.hasTag('nacho') || body == gPlayer) return;
+                if (body.hasTag("player")) {
+                    if (body.currentTeam == gPlayer.currentTeam) {
                         return Collisions.GHOST;
                     }
                 } else if (body == beachBall) {
-                    beachBall.recoredPlayerTouch(gustavo)
+                    beachBall.recoredPlayerTouch(gPlayer)
                     if (beachBall.position.y + beachBall.radius < -225) {
                         beachBall.addVelocity(new Lvector2D(0, 30))
                         return Collisions.GHOST;
@@ -228,13 +229,13 @@ setPlayergodMode(gustavo,
                 }
             }
             nacho.onCollisionStart = (body) => {
-                if (body.tag === "nacho" || body == gustavo) return;
-                if (body.team) {
-                    if (body.team == gustavo.team) {
+                if (body.tag === "nacho" || body == gPlayer) return;
+                if (body.hasTag("player")) {
+                    if (body.currentTeam == gPlayer.currentTeam) {
                         return Collisions.GHOST;
                     }
                 } else if (body == beachBall) {
-                    beachBall.recoredPlayerTouch(gustavo)
+                    beachBall.recoredPlayerTouch(gPlayer)
                     if (beachBall.position.y + beachBall.radius < -225) {
                         return Collisions.GHOST;
                     };
@@ -252,16 +253,17 @@ setPlayergodMode(gustavo,
             }, "shrink")
         }, true, Infinity, 50)
     },
-    function () {
+    function (gPlayer) {
+        if(!gPlayer) gPlayer = gustavo;
         sfxSB.play("pop", true)
         sfxSB.play("poup", true)
         for (let angle = 0; angle <= 360; angle += 18) {
-            let length = gustavo.radius + 50
+            let length = gPlayer.radius + 50
             let speed = 500
             let sinA = sine(angle);
             let cosA = -cosine(angle);
-            let x = gustavo.position.x + length * sinA
-            let y = gustavo.position.y + length * cosA
+            let x = gPlayer.position.x + length * sinA
+            let y = gPlayer.position.y + length * cosA
             let throwForce = new Lvector2D(speed * sinA, speed * cosA)
 
             let nacho = physics.createBoxBody(new Lvector2D(x, y), 25, 25, 0.6, 10, false)
@@ -287,9 +289,9 @@ setPlayergodMode(gustavo,
                 }
             }
             nacho.onCollisionStart = (body) => {
-                if (body.tag === "nacho" || body == gustavo) return;
-                if (body.team) {
-                    if (body.team != gustavo.team) {
+                if (body.tag === "nacho" || body == gPlayer) return;
+                if (body.hasTag("player")) {
+                    if (body.currentTeam != gPlayer.currentTeam) {
                         inPs.particleSource(nacho.position.x, nacho.position.y, nacho.width, nacho.height, [-300, 300], [-300, 300], [[0, 0], [1, 1]], nacho.width, "nope", 6, 0.5, function (particle) {
                             CaldroSSM.draw("gustavoSpray", particle.x, particle.y, particle.size, particle.size, true, 0)
                         }, "grow fadeout")
@@ -300,20 +302,20 @@ setPlayergodMode(gustavo,
                         return Collisions.GHOST;
                     }
                 } else if (body == beachBall) {
-                    beachBall.recoredPlayerTouch(gustavo)
+                    beachBall.recoredPlayerTouch(gPlayer)
                 }
             }
             world.addBody(nacho)
         }
     }
-)
+,)
 
 setPlayergodMode(clare, function () {
 
 }, function (time) {
     if (time < 3) return;
     let saabb = ground.getAABB();
-    if(clare.position.y <= beachBall.position.y){
+    if (clare.position.y <= beachBall.position.y) {
         clare.status.avoidingBall = true;
         // clare.camJump = false
     } else {
@@ -324,7 +326,7 @@ setPlayergodMode(clare, function () {
         CaldroSSM.draw("cloud1", particle.x, particle.y, particle.size, particle.size, true)
     }, "shrink fadeout")
 
-    let threshold = clare.radius*2.5
+    let threshold = clare.radius * 2.5
     let side = clare.team == 1 ? 1 : -1;
     if (teamManager.isOnSide(beachBall.position, clare.team) && teamManager.recordingScores) {
         if (saabb.min.y - (beachBall.position.y) < threshold) {
@@ -457,11 +459,11 @@ setPlayergodMode(clare, function () {
         }
         world.addBody(cloud)
     }
-}, 
+},
 
-function(){
-    clare.status.avoidingBall = false;
-})
+    function () {
+        clare.status.avoidingBall = false;
+    })
 
 setPlayergodMode(ken, function () {
 
@@ -476,11 +478,12 @@ setPlayergodMode(emilo)
 setPlayergodMode(abby,
     () => {
         abby.newAlly = null
-        abby.newAllyOldTeam = null
+        // abby.newAllyOldTeam = null
         abby.newAllyOldRestingPosition = null
         let bigHeart = physics.createCircleBody(new Lvector2D(abby.position.x, -120), abby.radius, 1, 1, true)
         bigHeart.inactive = true
         bigHeart.hasBeenOnOtherside = false
+
         bigHeart.drawing = () => {
             drawBodyShadowOnGround(bigHeart, 100)
             if (bigHeart.inactive) {
@@ -541,7 +544,7 @@ setPlayergodMode(abby,
                     } else {
                         bigHeart.setVelocity(Lvector2D.zero())
                         let throwDirection = vecMath.normalize(vecMath.subtract(new Lvector2D(0, -150), bigHeart.position))
-                        bigHeart.setVelocity(vecMath.multiply(throwDirection, clip(Math.abs(bigHeart.position.x)*4, 500, 700)))
+                        bigHeart.setVelocity(vecMath.multiply(throwDirection, clip(Math.abs(bigHeart.position.x) * 4, 500, 700)))
                         return Collisions.GHOST
                     }
 
@@ -550,10 +553,17 @@ setPlayergodMode(abby,
                 return Collisions.GHOST
             } else if (body.tag == "player") { // after she has thrown int
                 if (body.team != abby.team) {
-                    abby.newAlly = body;
-                    abby.newAllyOldTeam = abby.newAlly.team
+                    // setting variables for abby's seduction
+                    abby.willHostGMode = teamManager.getTeam(body.team).length == 1 && body.godMode.hostable // will make abby the host of the gmode if there is only one player on the otehr team. Gmode will still take place, this just determines if abby will host it
+                    abby.newAlly = body; // abby's victiom
+
+                    // abby.newAllyOldTeam = abby.newAlly.team
+
                     abby.newAllyOldRestingPosition = vecMath.copy(body.restingPosition);
-                    teamManager.setTeam(body, abby.team)
+
+                    // will change player team if abby wont host the mode
+                    if(!abby.willHostGMode) body.setTeam(abby.team, false)//
+
                     if (body.status.gender == 1) { // female
                         body.restingPosition = vecMath.copy(abby.restingPosition)
                     } else {
@@ -619,7 +629,8 @@ setPlayergodMode(abby,
         if (time > 13.6) {
             abby.brownHeart = null
             if (ally) {
-                ally.duringgodMode(time)
+                // perform the seduced player's gmode, be the vessel if the other player is the only one on ground
+                ally.godMode.during(time, abby.willHostGMode?abby:null)
                 doTask("go to ally domain", () => {
                     sfxSB.play("E", true, 0, null, 1)
                     mainGame.goToPlace(ally.domain)
@@ -642,13 +653,14 @@ setPlayergodMode(abby,
                 CaldroSSM.draw("brownHeart", particle.x, particle.y, particle.size, particle.size, true)
             }, "grow fadeout")
             clearDoTask("go to ally domain")
-            teamManager.setTeam(abby.newAlly, abby.newAllyOldTeam)
+            ally.setTeam(ally.team, false)
+            // teamManager.setTeam(abby.newAlly, abby.newAllyOldTeam)
             // console.log(vecMath.copy(ally.restingPosition))
             abby.newAlly.restingPosition.copy(abby.newAllyOldRestingPosition)
             // console.log(vecMath.copy(ally.restingPosition))
 
             abby.newAlly = null
-            abby.newAllyOldTeam = null
+            // abby.newAllyOldTeam = null
             abby.newAllyOldRestingPosition = null
             abby.brownHeart = null;
         }
