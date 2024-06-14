@@ -66,7 +66,6 @@ netStick.callback = function () {
 let beachBall = physics.createCircleBody(new Lvector2D(0, -150), 36, 0.9, 0.01, false)
 beachBall.staticFriction = new Lvector2D(0.5, 0)
 beachBall.dynamicFriction = new Lvector2D(0.1, 0.1)
-beachBall.touchedPlayers = new Array();
 beachBall.isGodBall = false;
 beachBall.tag = "beachball"
 beachBall.drawing = function () {
@@ -161,9 +160,7 @@ beachBall.onCollisionStart = function (body, collision) {
             // GM
             let gBallWinner = lasttouchedPlayer;
             if (ownGoal) { // deal with an owngoal by giving gball to the opposing team
-                gBallWinner = beachBall.touchedPlayers.find((player) => {
-                    return player.team != lasttouchedPlayer.team
-                })
+                gBallWinner = beachBall.getLastTouchedPlayer(teamManager.getOpposingTeam(lasttouchedPlayer.team))
                 if (!gBallWinner) { // if only one player has touched the ball before the godmode ball appears
                     let opposingTeam;
                     if (lasttouchedPlayer.team == 1) {
@@ -222,11 +219,11 @@ beachBall.onCollisionStart = function (body, collision) {
     } else {
         if (body.hasTag("player")) {
             beachBall.recoredPlayerTouch(body)
-            if (chance(80))
-                // sfxSB.play("hit_air1", true, 0, 0, (1))
-                if (chance(80) & rvel > 500 && beachBall.position.y < -100) {
-                    // idk
-                }
+            console.log(player.name)
+
+            /// easy mode dontrols
+            // let throwDirection = vecMath.normalize(vecMath.subtract(new Lvector2D(0, -150), beachBall.position))
+            // beachBall.setVelocity(vecMath.multiply(throwDirection, 700))
         }
         if (body == netStick && rvel > 159) {
             sfxSB.play("hit_thick1", true, 0, 0, volume)
@@ -236,22 +233,33 @@ beachBall.onCollisionStart = function (body, collision) {
         }
     }
 }
-beachBall.getLastTouchedPlayer = () => {
-    return beachBall.touchedPlayers[0]
+
+beachBall.touchedPlayers = [
+    0, // last touched player's team
+    [], // team 1
+    [], // team 2
+]
+beachBall.getLastTouchedPlayer = (team = "auto") => {
+    if (team == "auto") {
+        return beachBall.touchedPlayers[beachBall.touchedPlayers[0]][0]
+    } else {
+        return beachBall.touchedPlayers[team][0]
+    }
 }
 beachBall.recoredPlayerTouch = (player) => {
-    let body = player;
-    let lastBody = beachBall.getLastTouchedPlayer()
-    if (lastBody) {
-        if (body != lastBody) {
-            beachBall.touchedPlayers.unshift(body)
-            if (beachBall.touchedPlayers.length > 6) {
-                beachBall.touchedPlayers.pop();
-            }
+    let lastRecordedPlayerBeforeNow = beachBall.getLastTouchedPlayer(player.team)
+    let array = beachBall.touchedPlayers[player.team]
+    if (lastRecordedPlayerBeforeNow) {
+        if (player != lastRecordedPlayerBeforeNow) {
+            array.unshift(player)
         }
     } else {
-        beachBall.touchedPlayers.unshift(body)
+        array.unshift(player)
     }
+    if (array.length > 6) {
+        array.pop();
+    }
+    beachBall.touchedPlayers[0] = player.team
 }
 beachBall.godBall = (bool) => {
     if (bool) {

@@ -5,9 +5,8 @@ GameKeys.addKey(-1, 'h', () => {
 })
 
 GameKeys.addKey(0, "0", function () {
-    menuScene.match = new Match(timeToSeconds(0, 10), [gustavo], [abby], 20, snowBeach, abby)
+    menuScene.match = new Match(timeToSeconds(0, 10), [may, gustavo], [abby, clare], 40, snowBeach, 0, true, 60, 4)
     SceneManager.startScene(mainGame)
-    teamManager.team2Score = 11
 })
 
 GameKeys.addKey(0, "9", function () {
@@ -98,7 +97,7 @@ GameKeys.addKey(-1, "v", () => {
 
 
 
-GameKeys.addKey(-1, "0", () => {
+GameKeys.addKey(-1, "s", () => {
     shouldTakeScreenShot = true
 })
 

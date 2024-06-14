@@ -454,7 +454,7 @@ mainGame.setupMatchArea = function () {
 }
 
 class Match{
-    constructor(time, team1, team2, maxScore, location, player, allowGodMode="auto", godBallOdds = 60){
+    constructor(time, team1, team2, maxScore, location, player, allowGodMode="auto", godBallOdds = 60, godBallThreshold = null){
         this.time = time;
         this.team1 = team1;
         this.team2 = team2;
@@ -463,7 +463,7 @@ class Match{
         this.controlledPlayer = player
         this.allowGodMode;
         this.godBallOdds = godBallOdds;
-        this.godBallThreshold = limit(Math.round(this.maxScore*0.7), 7, 15);
+        this.godBallThreshold = godBallThreshold == null ? limit(Math.round(this.maxScore*0.7), 7, 15) : godBallThreshold;
         if(allowGodMode == "auto" || allowGodMode == null){
             this.allowGodMode = this.maxScore >= 10?true:false
         } else {

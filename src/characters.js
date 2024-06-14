@@ -1,5 +1,5 @@
 // ================= CHARACTERS ==============================
-let may = createCharacter("May", mayPink, 1, "what did you say? UwU", "maySpray", "sweat", oceanBeach)
+let may = createCharacter("May", mayPink, 1, "Its about to go dowwwnn UwU", "maySpray", "sweat", oceanBeach)
 let gustavo = createCharacter("Gustavo", gustavoYellow, 0, "It's na-cho day! 0_0", "nachoes", "sweat", oceanBeach)
 let clare = createCharacter("Clare", clareWhite, 1, "As light as a cloud", "clareSpray", "angerVein", clouds)
 let abby = createCharacter("Abby", abbyBrown, 1, "Hey, don't fall too hard okay? ^^", "brownHeart", "angerVein", oceanBeach)
@@ -53,23 +53,16 @@ setPlayergodMode(may,
     function () {
         // may.moveSpeed = 80
     },
-    function (time) {
-        let side = may.team == 1 ? 1 : -1;
+    function (time, gPlayer) {
+        if (!gPlayer) gPlayer = may;
+        let side = may.godModeTargetTeam == 1 ? -1 : 1;
         let saabb = ground.getAABB();
         if (time < 3) return
 
 
         if (withinRange(time, 3, 13)) {
-            /* let mayForce = new Lvector2D(0, 100)
-            if (beachBall.position.x * side > netStick.position.x) {
-                beachBall.addVelocity(vecMath.multiply(mayForce, 0.1))
-            }
-            let alph = clip(Math.abs(4 - time), 0, 1)
-            alpha(alph)
-            alpha(1) */
-
-            doTask("addMay'sArrowIndicator", () => {
-                inPs.particleSource(may.team == 1 ? 200 : -200, -30, 0, 0, 0, 0, null, 400, null, 1, Infinity, (particle) => {
+            doTask(gPlayer.name+"'sA1rrowIndicator", () => {
+                inPs.particleSource(200*side, -30, 0, 0, 0, 0, null, 400, null, 1, Infinity, (particle) => {
                     particle.y = Math.sin(Caldro.time.elapsedTime * 3) * 30
                     let alph = scaleTo(particle.y, -30, 30, 0, 0.4)
                     alpha(alph)
@@ -79,13 +72,13 @@ setPlayergodMode(may,
                     particle.callback = function () {
                         if (!teamManager.godModePlayer) {
                             particle.toDelete = true
-                            clearDoTask("addMay'sArrowIndicator")
+                            clearDoTask(gPlayer.name+"'sA1rrowIndicator")
                         }
                     }
                 })
             })
 
-            doTask("mayRainShower1", () => {
+            doTask(gPlayer.name+"RainShower1", () => {
                 let x = 200 * side + randomNumber(-200, 200)
                 let y = randomNumber(-400, -300)
                 let width = 80;
@@ -137,15 +130,15 @@ setPlayergodMode(may,
             return
         }
 
-        let mayForce = new Lvector2D(100 * side, 500)
+        let slamForce = new Lvector2D(100 * side, 500)
         if (beachBall.position.x * side > netStick.position.x) {
-            beachBall.addVelocity(vecMath.multiply(mayForce, 0.1))
+            beachBall.addVelocity(vecMath.multiply(slamForce, 0.1))
         }
 
-        doTask("mayRainShower2", () => {
+        doTask(gPlayer.namea+"RainShower2", () => {
             let sound = choose(["softD", "roughD"])
             sfxSB.play(sound, true, 0, null, 0.3)
-            inPs.particleSource(200 * side, -300, 400, 50, mayForce.x, mayForce.y, [0, 0], 80, "null", 1, Infinity, (particle) => {
+            inPs.particleSource(200 * side, -300, 400, 50, slamForce.x, slamForce.y, [0, 0], 80, "null", 1, Infinity, (particle) => {
                 CaldroSSM.draw("pinkArrow", particle.x, particle.y, particle.size, particle.size, true, angleBetweenPoints(ORIGIN, new Point2D(particle.xv, particle.yv)))
             }, "", (particle) => {
                 particle.callback = function () {
@@ -175,15 +168,15 @@ setPlayergodMode(gustavo,
 
     },
     function (time, gPlayer) {
-        if(!gPlayer) gPlayer = gustavo;
+        if (!gPlayer) gPlayer = gustavo;
         if (teamManager.controlledPlayer != gPlayer) {
-            doTask("self-positioning"+gPlayer.name, () => {
+            doTask("self-positioning" + gPlayer.name, () => {
                 if (gPlayer.position.y > -100) {
                     jump(gPlayer)
                 }
             }, true, Infinity, randomNumber(100, 200))
         }
-        doTask(gPlayer.name+"&gustavoShootsNachoes--yes----nachoes", () => {
+        doTask(gPlayer.name + "&gustavoShootsNachoes--yes----nachoes", () => {
             let pop = sfxSB.get("pop", true)
             pop.setVolume(scaleTo(clip(time, 0, 5), 0, 5, 1, 0.2))
             pop.setPlaybackRate(randomNumber(0.8, 1.2))
@@ -254,7 +247,7 @@ setPlayergodMode(gustavo,
         }, true, Infinity, 50)
     },
     function (gPlayer) {
-        if(!gPlayer) gPlayer = gustavo;
+        if (!gPlayer) gPlayer = gustavo;
         sfxSB.play("pop", true)
         sfxSB.play("poup", true)
         for (let angle = 0; angle <= 360; angle += 18) {
@@ -308,161 +301,164 @@ setPlayergodMode(gustavo,
             world.addBody(nacho)
         }
     }
-,)
+    ,)
 
-setPlayergodMode(clare, function () {
+setPlayergodMode(clare,
+    () => {
 
-}, function (time) {
-    if (time < 3) return;
-    let saabb = ground.getAABB();
-    if (clare.position.y <= beachBall.position.y) {
-        clare.status.avoidingBall = true;
-        // clare.camJump = false
-    } else {
-        clare.status.avoidingBall = false;
-    }
-    let aabb = clare.getAABB();
-    inPs.particleSource(clare.position.x, aabb.max.y, clare.radius, 10, [-500, 500], [-150, 10], [0, 0], randomNumber(30, 40), "", 5, 0.4, function (particle) {
-        CaldroSSM.draw("cloud1", particle.x, particle.y, particle.size, particle.size, true)
-    }, "shrink fadeout")
-
-    let threshold = clare.radius * 2.5
-    let side = clare.team == 1 ? 1 : -1;
-    if (teamManager.isOnSide(beachBall.position, clare.team) && teamManager.recordingScores) {
-        if (saabb.min.y - (beachBall.position.y) < threshold) {
-            // jump away if youre clare is jumping on the ball hersel
-            if (teamManager.controlledPlayer != clare) {
-                if (beachBall.position.y > clare.position.y) {
-                    // clare.canJump = false
-                }
-                if (clare.position.y < beachBall.position.y - beachBall.radius && withinRange(clare.position.x, beachBall.position.x - beachBall.radius * 4, beachBall.position.x + beachBall.radius * 4)) {
-                    movePlayer(clare, clare.moveSpeed * 3, clip((-200 * side) - beachBall.position.x), -1, 1)
-                    movePlayer(beachBall, clare.moveSpeed * 3, -clip((-200 * side) - beachBall.position.x), -1, 1)
-                    beachBall.addVelocity(new Lvector2D(0, -3000))
-                    // clare.canJump = false
-                    // clare.status.controllable = false
-                    // doTask("don't fail yourself clare", () => {
-                    // }, true, INFINITY, 5)
-                }
-            }
-
-            // do all the ball saving up stuff
-            let aggression = scaleTo(beachBall.position.y + beachBall.radius, saabb.min.y - threshold, saabb.min.y, 0, 1.3)
-            beachBall.addVelocity(vecMath.multiply(new Lvector2D(0, -beachBall.linearVelocity.y), aggression))
-            // beachBall.addVelocity(vecMath.multiply(vecMath.invert(beachBall.linearVelocity), aggression))
-            inPs.particleSource(beachBall.position.x, saabb.min.y, clare.radius, clare.radius, [-200, 200], [-650 * aggression, 10], [0, 0], randomNumber(50, 100), "", 1 + (Math.round(2 * aggression)), 0.5, function (particle) {
-                CaldroSSM.draw(particle.picture, particle.x, particle.y, particle.size, particle.size, true)
-            }, "shrink fadeout", (particle) => {
-                particle.picture = chance(20) ? "blueArrow" : "cloud1";
-            })
-
-            doTask("snowfall", function () {
-                inPs.particleSource(0, -saabb.min.y, 1000, 50, [-50, 10], [-300 - 1000 * aggression, -150], [[0, -10 * aggression], [0, 0]], 20, "doesn't matter, same as the value before this, the particle size, since we are costum rendering our particles/clouds xD", 1 + Math.ceil(2 * aggression), 30, function (particle) {
-                    // alpha(0.6)
-                    CaldroSSM.draw(particle.snowflake, particle.x, particle.y, particle.size, particle.size, true, particle.angle, 0, 1 + 2 * aggression)
-                    // alpha(1)
-                }, "", function (particle) {
-                    let snowflake = choose(["snowflake1", "snowflake2"]);
-                    particle.snowflake = snowflake
-                    particle.angle = randomNumber(0, 360)
-                    particle.angleSpeed = randomNumber(30, 270)
-                    particle.callback = function () {
-                        particle.angle += particle.angleSpeed * Caldro.time.deltatime;
-                        particle.angle = 0
-                        if (particle.y + particle.size / 2 < -250) {
-                            inPs.removeParticle(particle)
-                        }
-                        if (!teamManager.godModePlayer) {
-                            inPs.removeParticle(particle)
-                        }
-                    }
-                    particle.onDelete = function () {
-                        inPs.particleSource(particle.x, particle.y, 1, 2, [0, 0], [0, 100], [0, 0], randomNumber(30, 40), "", 5, 0.2, function (particle) {
-                            CaldroSSM.draw("clareSpray", particle.x, particle.y, particle.size, particle.size, true)
-                        }, "shrink fadeout")
-                    }
-                })
-            }, true, Infinity, 10)
+    }, (time, gPlayer) => {
+        if (!gPlayer) gPlayer = clare;
+        if (time < 3) return;
+        let saabb = ground.getAABB();
+        if (gPlayer.position.y <= beachBall.position.y) {
+            gPlayer.status.avoidingBall = true;
+            // clare.camJump = false
         } else {
-            doTask("snowfall", function () {
-                inPs.particleSource(0, -350, 1000, 50, [-50, 10], [250, 300], [[0, 1], [0, 0]], 20, "doesn't matter, same as the value before this, the particle size, since we are costum rendering our particles/clouds xD", 1, 30, function (particle) {
-                    // alpha(0.6)
-                    CaldroSSM.draw(particle.snowflake, particle.x, particle.y, particle.size, particle.size, true, particle.angle)
-                    // alpha(1)
-                }, "", function (particle) {
-                    let snowflake = choose(["snowflake1", "snowflake2"]);
-                    particle.snowflake = snowflake
-                    particle.angle = randomNumber(0, 360)
-                    particle.angleSpeed = randomNumber(30, 270)
-                    particle.callback = function () {
-                        particle.angle += particle.angleSpeed * Caldro.time.deltatime;
-                        if (particle.y + particle.size / 2 >= randomNumber(saabb.min.y, 100)) {
-                            inPs.removeParticle(particle)
-                        }
-                        if (!clare.isIngodMode) {
-                            inPs.removeParticle(particle)
-                        }
-                    }
-                    particle.onDelete = function () {
-                        inPs.particleSource(particle.x, particle.y, 1, 2, [0, 0], [0, 100], [0, 0], randomNumber(30, 40), "", 5, 0.2, function (particle) {
-                            CaldroSSM.draw("clareSpray", particle.x, particle.y, particle.size, particle.size, true)
-                        }, "shrink fadeout")
-                    }
-                })
-            }, true, Infinity, 10)
+            gPlayer.status.avoidingBall = false;
         }
-    }
+        let aabb = gPlayer.getAABB();
+        inPs.particleSource(gPlayer.position.x, aabb.max.y, gPlayer.radius, 10, [-500, 500], [-150, 10], [0, 0], randomNumber(30, 40), "", 5, 0.4, function (particle) {
+            CaldroSSM.draw("cloud1", particle.x, particle.y, particle.size, particle.size, true)
+        }, "shrink fadeout")
 
-
-
-    if (chance(5) && time > 14) {
-
-        let cloud = physics.createBoxBody(new Lvector2D(200 * side + randomNumber(-150, 150), 300), randomNumber(50, 100), randomNumber(25, 50), 0, 1, false)
-        cloud.touchedPlayer = false
-        cloud.hangTime = 1 // in seconds1
-        cloud.gravity = false
-        cloud.tag = "floating_cloud"
-        // cloud.dynamicFriction = new Lvector2D(1, 0)
-        cloud.drawing = () => {
-            CaldroSSM.draw("snow1", cloud.position.x, cloud.position.y, cloud.width * 1.1, cloud.height * 1.3, true)
-        }
-        cloud.callback = () => {
-            if (cloud.hangTime <= 0 || cloud.position.y < -220 || cloud.position.y > 400) {
-                world.removeBody(cloud)
-                return;
-            }
-            if (!cloud.touchedPlayer) {
-                if (cloud.position.y >= -160) {
-                    cloud.setVelocity(new Lvector2D(cloud.linearVelocity.x, -100))
-                } else {
-                    cloud.hangTime -= Caldro.time.deltatime
+        let threshold = gPlayer.radius * 2.5
+        let side = gPlayer.team == 1 ? 1 : -1;
+        if (teamManager.isOnSide(beachBall.position, gPlayer.currentTeam) && teamManager.recordingScores) {
+            if (saabb.min.y - (beachBall.position.y) < threshold) {
+                // jump away if youre clare is jumping on the ball hersel
+                if (teamManager.controlledPlayer != gPlayer) {
+                    if (beachBall.position.y > gPlayer.position.y) {
+                        // clare.canJump = false
+                    }
+                    if (gPlayer.position.y < beachBall.position.y - beachBall.radius && withinRange(gPlayer.position.x, beachBall.position.x - beachBall.radius * 4, beachBall.position.x + beachBall.radius * 4)) {
+                        movePlayer(gPlayer, gPlayer.moveSpeed * 3, clip((-200 * side) - beachBall.position.x), -1, 1)
+                        movePlayer(beachBall, gPlayer.moveSpeed * 3, -clip((-200 * side) - beachBall.position.x), -1, 1)
+                        beachBall.addVelocity(new Lvector2D(0, -3000))
+                        // clare.canJump = false
+                        // clare.status.controllable = false
+                        // doTask("don't fail yourself clare", () => {
+                        // }, true, INFINITY, 5)
+                    }
                 }
 
-            } else if (cloud.position.y <= -150) {
-                world.removeBody(cloud)
-            }
-        }
-        cloud.onCollisionStart = (body) => {
-            if (body == beachBall) {
-                world.removeBody(cloud)
-            }
-            if (body == beachBall || body == ground || body == net || body == netStick) return Collisions.GHOST;
-            if (body.tag != cloud.tag) {
-                cloud.touchedPlayer = true
-            }
-        }
-        cloud.onRemove = () => {
-            if (cloud.position.y < -250) return
-            inPs.particleSource(cloud.position.x, cloud.position.y, cloud.width, cloud.height, [-500, 500], [-500, 500], [[0, 0], [1, 1]], randomNumber(40, 50), "", 5, 0.5, function (particle) {
-                CaldroSSM.draw("cloud1", particle.x, particle.y, particle.size, particle.size, true)
-            }, "grow fadeout")
-        }
-        world.addBody(cloud)
-    }
-},
+                // do all the ball saving up stuff
+                let aggression = scaleTo(beachBall.position.y + beachBall.radius, saabb.min.y - threshold, saabb.min.y, 0, 1.3)
+                beachBall.addVelocity(vecMath.multiply(new Lvector2D(0, -beachBall.linearVelocity.y), aggression))
+                // beachBall.addVelocity(vecMath.multiply(vecMath.invert(beachBall.linearVelocity), aggression))
+                inPs.particleSource(beachBall.position.x, saabb.min.y, gPlayer.radius, gPlayer.radius, [-200, 200], [-650 * aggression, 10], [0, 0], randomNumber(50, 100), "", 1 + (Math.round(2 * aggression)), 0.5, function (particle) {
+                    CaldroSSM.draw(particle.picture, particle.x, particle.y, particle.size, particle.size, true)
+                }, "shrink fadeout", (particle) => {
+                    particle.picture = chance(20) ? "blueArrow" : "cloud1";
+                })
 
-    function () {
-        clare.status.avoidingBall = false;
+                doTask("snowfall", function () {
+                    inPs.particleSource(0, -saabb.min.y, 1000, 50, [-50, 10], [-300 - 1000 * aggression, -150], [[0, -10 * aggression], [0, 0]], 20, "doesn't matter, same as the value before this, the particle size, since we are costum rendering our particles/clouds xD", 1 + Math.ceil(2 * aggression), 30, function (particle) {
+                        // alpha(0.6)
+                        CaldroSSM.draw(particle.snowflake, particle.x, particle.y, particle.size, particle.size, true, particle.angle, 0, 1 + 2 * aggression)
+                        // alpha(1)
+                    }, "", function (particle) {
+                        let snowflake = choose(["snowflake1", "snowflake2"]);
+                        particle.snowflake = snowflake
+                        particle.angle = randomNumber(0, 360)
+                        particle.angleSpeed = randomNumber(30, 270)
+                        particle.callback = function () {
+                            particle.angle += particle.angleSpeed * Caldro.time.deltatime;
+                            particle.angle = 0
+                            if (particle.y + particle.size / 2 < -250) {
+                                inPs.removeParticle(particle)
+                            }
+                            if (!teamManager.godModePlayer) {
+                                inPs.removeParticle(particle)
+                            }
+                        }
+                        particle.onDelete = function () {
+                            inPs.particleSource(particle.x, particle.y, 1, 2, [0, 0], [0, 100], [0, 0], randomNumber(30, 40), "", 5, 0.2, function (particle) {
+                                CaldroSSM.draw("clareSpray", particle.x, particle.y, particle.size, particle.size, true)
+                            }, "shrink fadeout")
+                        }
+                    })
+                }, true, Infinity, 10)
+            } else {
+                doTask("snowfall", function () {
+                    inPs.particleSource(0, -350, 1000, 50, [-50, 10], [250, 300], [[0, 1], [0, 0]], 20, "doesn't matter, same as the value before this, the particle size, since we are costum rendering our particles/clouds xD", 1, 30, function (particle) {
+                        // alpha(0.6)
+                        CaldroSSM.draw(particle.snowflake, particle.x, particle.y, particle.size, particle.size, true, particle.angle)
+                        // alpha(1)
+                    }, "", function (particle) {
+                        let snowflake = choose(["snowflake1", "snowflake2"]);
+                        particle.snowflake = snowflake
+                        particle.angle = randomNumber(0, 360)
+                        particle.angleSpeed = randomNumber(30, 270)
+                        particle.callback = function () {
+                            particle.angle += particle.angleSpeed * Caldro.time.deltatime;
+                            if (particle.y + particle.size / 2 >= randomNumber(saabb.min.y, 100)) {
+                                inPs.removeParticle(particle)
+                            }
+                            if (!gPlayer.isIngodMode) {
+                                inPs.removeParticle(particle)
+                            }
+                        }
+                        particle.onDelete = function () {
+                            inPs.particleSource(particle.x, particle.y, 1, 2, [0, 0], [0, 100], [0, 0], randomNumber(30, 40), "", 5, 0.2, function (particle) {
+                                CaldroSSM.draw("clareSpray", particle.x, particle.y, particle.size, particle.size, true)
+                            }, "shrink fadeout")
+                        }
+                    })
+                }, true, Infinity, 10)
+            }
+        }
+
+
+
+        if (chance(5) && time > 14) {
+
+            let cloud = physics.createBoxBody(new Lvector2D(200 * side + randomNumber(-150, 150), 300), randomNumber(50, 100), randomNumber(25, 50), 0, 1, false)
+            cloud.touchedPlayer = false
+            cloud.hangTime = 1 // in seconds1
+            cloud.gravity = false
+            cloud.tag = "floating_cloud"
+            // cloud.dynamicFriction = new Lvector2D(1, 0)
+            cloud.drawing = () => {
+                CaldroSSM.draw("snow1", cloud.position.x, cloud.position.y, cloud.width * 1.1, cloud.height * 1.3, true)
+            }
+            cloud.callback = () => {
+                if (cloud.hangTime <= 0 || cloud.position.y < -220 || cloud.position.y > 400) {
+                    world.removeBody(cloud)
+                    return;
+                }
+                if (!cloud.touchedPlayer) {
+                    if (cloud.position.y >= -160) {
+                        cloud.setVelocity(new Lvector2D(cloud.linearVelocity.x, -100))
+                    } else {
+                        cloud.hangTime -= Caldro.time.deltatime
+                    }
+
+                } else if (cloud.position.y <= -150) {
+                    world.removeBody(cloud)
+                }
+            }
+            cloud.onCollisionStart = (body) => {
+                if (body == beachBall) {
+                    world.removeBody(cloud)
+                }
+                if (body == beachBall || body == ground || body == net || body == netStick) return Collisions.GHOST;
+                if (body.tag != cloud.tag) {
+                    cloud.touchedPlayer = true
+                }
+            }
+            cloud.onRemove = () => {
+                if (cloud.position.y < -250) return
+                inPs.particleSource(cloud.position.x, cloud.position.y, cloud.width, cloud.height, [-500, 500], [-500, 500], [[0, 0], [1, 1]], randomNumber(40, 50), "", 5, 0.5, function (particle) {
+                    CaldroSSM.draw("cloud1", particle.x, particle.y, particle.size, particle.size, true)
+                }, "grow fadeout")
+            }
+            world.addBody(cloud)
+        }
+    },
+
+    (gPlayer) => {
+        if (!gPlayer) gPlayer = clare
+        gPlayer.status.avoidingBall = false;
     })
 
 setPlayergodMode(ken, function () {
@@ -562,7 +558,11 @@ setPlayergodMode(abby,
                     abby.newAllyOldRestingPosition = vecMath.copy(body.restingPosition);
 
                     // will change player team if abby wont host the mode
-                    if(!abby.willHostGMode) body.setTeam(abby.team, false)//
+                    if (!abby.willHostGMode) {
+                        body.setTeam(abby.team, false)
+                    } else {
+                        body.godModeTargetTeam = body.currentTeam;
+                    }
 
                     if (body.status.gender == 1) { // female
                         body.restingPosition = vecMath.copy(abby.restingPosition)
@@ -630,7 +630,7 @@ setPlayergodMode(abby,
             abby.brownHeart = null
             if (ally) {
                 // perform the seduced player's gmode, be the vessel if the other player is the only one on ground
-                ally.godMode.during(time, abby.willHostGMode?abby:null)
+                ally.godMode.during(time, abby.willHostGMode ? abby : null)
                 doTask("go to ally domain", () => {
                     sfxSB.play("E", true, 0, null, 1)
                     mainGame.goToPlace(ally.domain)
