@@ -1,14 +1,14 @@
 // ================= CHARACTERS ==============================
-let may = createCharacter("May", mayPink, 1, "Its about to go dowwwnn UwU", "maySpray", "sweat", oceanBeach)
+let may = createCharacter("May", mayPink, 1, "Feel the Pressure! UwU", "maySpray", "sweat", oceanBeach)
 let gustavo = createCharacter("Gustavo", gustavoYellow, 0, "It's na-cho day! 0_0", "nachoes", "sweat", oceanBeach)
-let clare = createCharacter("Clare", clareWhite, 1, "As light as a cloud", "clareSpray", "angerVein", clouds)
-let abby = createCharacter("Abby", abbyBrown, 1, "Hey, don't fall too hard okay? ^^", "brownHeart", "angerVein", oceanBeach)
-let ken = createCharacter("Ken", kenGrey, 0, "...this is my turf u_u", "epglot", "angerVein", epoglis, "rgb(0, 0, 2)")
+let clare = createCharacter("Clare", clareWhite, 1, "..", "clareSpray", "angerVein", clouds)
+let abby = createCharacter("Abby", abbyBrown, 1, "It's called inspiration okay? ^^", "brownHeart", "angerVein", oceanBeach)
+let ken = createCharacter("Ken", kenGrey, 0, "Any last words? u_u", "epglot", "angerVein", epoglis, "rgb(0, 0, 2)")
 ken.godModeMusic = "kenGM";
 ken.punch1 = physics.createCircleBody(new Lvector2D(0, 0), ken.radius / 2, 0.1, 10, false)
 ken.punch2 = physics.createCircleBody(new Lvector2D(0, 0), ken.radius / 2, 0.5, 3000, true)
 
-let emilo = createCharacter("Emilo", emiloGreen, 0, "let's chenk out what I've learnt", ["download", "cloud1"], "loading", oceanBeach)
+let emilo = createCharacter("Emilo", emiloGreen, 0, "emilo.clone.exe", ["download", "cloud1"], "loading", oceanBeach)
 
 
 

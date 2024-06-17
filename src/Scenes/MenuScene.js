@@ -567,7 +567,7 @@ CaldroIH.onload = () => {
         menuScene.prepareGamePreviewShot()
     }, 200);
 } */
-menuScene.chosenOne = null
+menuScene.chosenOne = null /// chosen player button
 menuScene.chosenPlayer = null
 menuScene.showingConfirmButtons = false;
 menuScene.confirmYesNoAlpha = 0
@@ -678,6 +678,9 @@ function createPlayerUnselectButton(player, team) {
             menuScene.team1 = arrUtils.remove(menuScene.team1, UnselectButton.player)
         if (UnselectButton.team == 2)
             menuScene.team2 = arrUtils.remove(menuScene.team2, UnselectButton.player)
+
+        /// remove the player for beeing selected
+        if(menuScene.chosenPlayer == UnselectButton.player) menuScene.chosenOne = null; 
 
         menuScene.availblePlayers.push(player)
         menuScene.buttons = menuScene.buttons.filter((but) => {
