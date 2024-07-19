@@ -344,6 +344,7 @@ function jump(player, velocityX = 0, velocityY = null) {
     }
     if (body.canJump && body.position.y > -150) { // WE JUMP HERE
         // sfxSB.play(choose(["jump1", "jump2"]), true)
+        sfxSB.play(choose(["wfuhf"]), true, 0, 0, 2)
 
         sfxSB.play(mainGame.currentLocation.groundWalkingSound[1])
         body.addVelocity(new Lvector2D(velocityX, -Math.abs(velocityY)))

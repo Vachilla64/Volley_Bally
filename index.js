@@ -1,39 +1,10 @@
-function _loadScript(url){
-    let scriptFile = document.createElement("script");
-    scriptFile.src = url;
-    scriptFile.defer = true;
-    scriptFile.type = "application/javascript"
-    document.body.appendChild(scriptFile);
+"use strict";
+
+function _launchAudioTests() {
+    _loadScript("testingAudio.js");
 }
 
-function onCaldroLoad(){
-    _launchGame()
-    // _lauchAudioTests()
-}
-
-_loadScript(
-    "../Caldro/Setup_Caldro.js",
-)
-{
-    let path_suffix = "../"
-    // _loadScript(`${path_suffix}Caldro/Setup_Caldro.js`);
-}
-
-
-function _launchGame(){
-    for (let i = 0; i < Game_files.length; ++i) {
-        setTimeout(()=>{
-            loadScript(dir + Game_files[i])
-        }, i*100)
-    };
-}
-
-function _lauchAudioTests(){
-    loadScript("testingAudio.js")
-}
-
-
-let dir = "src/"
+let dir = "src/";
 
 let Game_files = [
     "variables.js",
@@ -45,16 +16,15 @@ let Game_files = [
     "character_setup.js",
     "enviroment.js",
     "characters.js",
-    // "Charancters/may.js",
-    // "Charancters/gustavo.js",
-    // "Charancters/clare.js",
-    // "Charancters/abby.js",
-    // "Charancters/ken.js",
-    // "Charancters/emilo.js",
+    // "Characters/may.js",
+    // "Characters/gustavo.js",
+    // "Characters/clare.js",
+    // "Characters/abby.js",
+    // "Characters/ken.js",
+    // "Characters/emilio.js",
     "Scene.js",
     "SFX.js",
     "animations.js",
-    
     "Scenes/mainGame.js",
     "Scenes/tutorialScene.js",
     "Scenes/loaderScreen.js",
@@ -69,7 +39,15 @@ let Game_files = [
     "Scenes/transitions.js",
     "Scenes/lab.js",
     "Scenes/matchOverScene.js",
-
     "gameLogic.js",
     "controls.js",
-]
+];
+
+
+function onCaldroLoad() {
+    loadScriptFiles(Game_files, dir, () => {
+        console.log("Game files loaded");
+    });
+}
+
+

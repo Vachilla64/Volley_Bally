@@ -16,27 +16,22 @@ let planep1 = new draggable(c.vw * 40, c.vh * 30, 100, 100);
 let planep2 = new draggable(c.vw * 80, c.vh * 70, 100, 100);
 
 
+
 // Caldro.time.setMaxFPS(20);
 function mainLoop() {
     window.requestAnimationFrame(mainLoop)
     // Caldro.time.update();
     if (!Caldro.time.update()) return;
     GameKeys.updateKeys();
-
-
+    
     // clear()
     SceneManager.update(Caldro.time.deltatime);
     audioManager.update();
     // rect(0, 0, c.w, c.h, CALDGREEN);
     SceneManager.render();
+    // updatePointers();
     // Caldro.renderer.setRenderingCanvas(c)
     let body = window.document.body
-    let cam = SceneManager.currentScene.camera
-    let scaledPointer = new Point2D(
-        (pointer.x * (pw / c.w)),
-        (pointer.y * (ph / c.h))
-    )
-    cam.updatePointer(scaledPointer)
 
 
     /* 
@@ -61,6 +56,7 @@ function mainLoop() {
     //*/
 
     // cordShow(pointer, "white")
+    
 }
 
 

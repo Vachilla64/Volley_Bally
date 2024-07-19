@@ -10,8 +10,8 @@ let loadToCaldroTransition = new TransitionScreen(
         alpha(1)
     },
     () => {
-        GameKeys.hitKey("0")
-        // SceneManager.startScene(caldroScene) 
+        // GameKeys.hitKey("0")
+        SceneManager.startScene(caldroScene) 
         // SceneManager.startScene(mainScreen)
 
         // SceneManager.startScene(menuScene)  
@@ -215,6 +215,7 @@ let mainScreenToMenuScreen = new TransitionScreen(
         alpha(1)
     }, 
     ()=>{
+        mainScreen.camera.y = 0
         menuScene.followingCamTarget = true
         Caldro.events.handleKeyboardEvents = true;
         Caldro.events.handleMouseEvents = true;

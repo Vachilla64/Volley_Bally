@@ -1,4 +1,4 @@
-
+"use strict"
 
 let menuCam = new camera();
 const menuScene = new Scene("menuScene")
@@ -66,6 +66,7 @@ toMainScreen.onclick = () => {
 
 let previousPlayer = new button(mcTargetP4.x - 115, mcTargetP4.y + 30, 80, 150, "", 'transparent')
 previousPlayer.drawingStyle = 3
+previousPlayer.audio = ["wooshST1"]
 /* nextPlayer.drawing = () => {
     let button = nextPlayer;
     curvedRect(button.x, button.y, button.width, button.height, button.color, 0, 10)
@@ -76,6 +77,7 @@ previousPlayer.onclick = () => {
 }
 let nextPlayer = new button(mcTargetP4.x + 115, mcTargetP4.y + 30, 80, 150, "", 'transparent')
 nextPlayer.drawingStyle = 3
+nextPlayer.audio = ["wooshST1"]
 /* nextPlayer.drawing = () => {
     let button = nextPlayer;
     curvedRect(button.x, button.y, button.width, button.height, button.color, 0, 10)
@@ -91,6 +93,7 @@ selectPlayer.onclick = () => {
 }
 let toTeam1 = new button(-910, -110, 50, 40, "", stylizedColors["ablue"])
 toTeam1.drawingStyle = 3
+toTeam1.audio = ["uiOpen1"]
 toTeam1.drawing = () => {
     let button = toTeam1;
     let color = button.color
@@ -116,6 +119,7 @@ toTeam1.onclick = () => {
 }
 let toTeam2 = new button(-690, -110, 50, 40, "", stylizedColors["ablue"])
 toTeam2.drawingStyle = 3
+toTeam2.audio = ["uiOpen1"]
 toTeam2.drawing = () => {
     let button = toTeam2;
     let color = button.color
@@ -142,6 +146,7 @@ toTeam2.onclick = () => {
 
 let selectedPlayersButton = new button(-800, 180, 80, 40, "Next", "lime")
 selectedPlayersButton.drawingStyle = 3;
+selectedPlayersButton.audio = ["uiProg2"]
 selectedPlayersButton.drawing = () => {
     let button = selectedPlayersButton;
     let color = button.color
@@ -163,6 +168,7 @@ selectedPlayersButton.onclick = () => {
 
 let playerSelcetToMatchSetup = new button(-500, -170, 50, 50, "Back", "orange")
 playerSelcetToMatchSetup.drawingStyle = 3;
+playerSelcetToMatchSetup.audio = ["uiBack1"]
 playerSelcetToMatchSetup.drawing = () => {
     let button = playerSelcetToMatchSetup;
     let color = button.color
@@ -180,6 +186,7 @@ menuScene.matchTimes = [1, 3, 5, 10, INFINITY]
 menuScene.matchTimeIndex = 1;
 let matchtimeReduce = new button(-100, mcTargetP8.y - 27, 30, 30, "", stylizedColors["yellow"])
 matchtimeReduce.drawingStyle = 3
+matchtimeReduce.audio = ["uiSwitch1"]
 matchtimeReduce.drawing = () => {
     let button = matchtimeReduce
     let color = "white"
@@ -201,6 +208,7 @@ matchtimeReduce.onclick = () => {
 }
 let matchtimeIncrease = new button(100, mcTargetP8.y - 27, 30, 30, "", stylizedColors["yellow"])
 matchtimeIncrease.drawingStyle = 3
+matchtimeIncrease.audio = ["uiSwitch1"]
 matchtimeIncrease.drawing = () => {
     let button = matchtimeIncrease
     let color = "white"
@@ -225,6 +233,7 @@ menuScene.matchMaxScores = [3, 7, 15, 24, INFINITY]
 menuScene.matchMaxScoreIndex = 1
 let matchMaxScoreReduce = new button(-100, mcTargetP8.y + 48, 30, 30, "", stylizedColors["yellow"])
 matchMaxScoreReduce.drawingStyle = 3
+matchMaxScoreReduce.audio = ["uiSwitch1"]
 matchMaxScoreReduce.drawing = () => {
     let button = matchMaxScoreReduce
     let color = "white"
@@ -246,6 +255,7 @@ matchMaxScoreReduce.onclick = () => {
 }
 let matchMaxScoreIncrease = new button(100, mcTargetP8.y + 48, 30, 30, "", stylizedColors["yellow"])
 matchMaxScoreIncrease.drawingStyle = 3
+matchMaxScoreIncrease.audio = ["uiSwitch1"]
 matchMaxScoreIncrease.drawing = () => {
     let button = matchMaxScoreIncrease
     let color = "white"
@@ -268,6 +278,7 @@ matchMaxScoreIncrease.onclick = () => {
 
 let goToPlayerSelectScreen = new button(mcTargetP8.x - 150, mcTargetP8.y + 145, 120, 40, "Select Players", "lime")
 goToPlayerSelectScreen.drawingStyle = 3;
+goToPlayerSelectScreen.audio = ["uiProg1"]
 goToPlayerSelectScreen.drawing = function () {
     let button = goToPlayerSelectScreen;
     let color = this.color
@@ -288,6 +299,7 @@ goToPlayerSelectScreen.onclick = () => {
 
 let matchSetupToMenu = new button(mcTargetP8.x + 150, mcTargetP8.y + 145, 120, 40, "Back", "orange")
 matchSetupToMenu.drawingStyle = 3;
+matchSetupToMenu.audio = ["uiBack1"]
 matchSetupToMenu.drawing = () => {
     let button = matchSetupToMenu;
     curvedRect(button.x, button.y, button.width, button.height, button.color, 0, 10)
@@ -301,6 +313,7 @@ matchSetupToMenu.onclick = () => {
 
 let locationSelectToPlyaerSelect = new button(mcTargetP5.x - 50, mcTargetP5.y + 170, 100, 40, "<< Back", "orange")
 locationSelectToPlyaerSelect.drawingStyle = 3;
+locationSelectToPlyaerSelect.audio = ["uiBack1"]
 locationSelectToPlyaerSelect.drawing = () => {
     let button = locationSelectToPlyaerSelect;
     curvedRect(button.x, button.y, button.width, button.height, button.color, 0, 10)
@@ -316,6 +329,7 @@ locationSelectToPlyaerSelect.onclick = () => {
 
 let confirmMatch = new button(mcTargetP5.x + 250, mcTargetP5.y + 170, 100, 40, "Confirm >>", 'lime')
 confirmMatch.drawingStyle = 3;
+confirmMatch.audio = ["uiProg3"]
 confirmMatch.drawing = () => {
     let button = confirmMatch;
     curvedRect(button.x, button.y, button.width, button.height, button.color, 0, 10)
@@ -346,7 +360,6 @@ menuScene.matchInfo = {
 }
 
 confirmMatch.onclick = () => {
-    musicSB.play("anticipation", false, 0, 0.4)
     setupMatch()
     menuScene.prepareGamePreviewShot();
     menuScene.setCamTarget(mcTargetP2)
@@ -354,6 +367,7 @@ confirmMatch.onclick = () => {
 
 let previousLocation = new button(290, -23, 40, 40, "", "white")
 previousLocation.drawingStyle = 3
+previousLocation.audio = ["uiSwitch2"]
 previousLocation.drawing = () => {
     let button = previousLocation
     let angle = 75
@@ -374,6 +388,7 @@ previousLocation.onclick = () => {
 }
 let nextLocation = new button(-98, 83.5, 40, 40, "", "white")
 nextLocation.drawingStyle = 3
+nextLocation.audio = ["uiSwitch2"]
 nextLocation.drawing = () => {
     let button = nextLocation
     let angle = -105
@@ -395,6 +410,7 @@ nextLocation.onclick = () => {
 
 let confirmMatchYes = new button(-100, -400, 100, 40, "Yes!", "lime")
 confirmMatchYes.drawingStyle = 3;
+confirmMatchYes.audio = ["uiAccept1"]
 confirmMatchYes.drawing = () => {
     let button = confirmMatchYes;
     alpha(menuScene.confirmYesNoAlpha);
@@ -407,10 +423,12 @@ confirmMatchYes.callback = () => {
     confirmMatchYes.active = menuScene.showingConfirmButtons
 }
 confirmMatchYes.onclick = () => {
+    sfxSB.play("wooshR", true, 0, 0, 2)
     SceneManager.startTransitionScreen(menuToWaitingSceneTransition)
 }
 let confirmMatchNo = new button(100, -400, 100, 40, "Uhm...", "orange")
 confirmMatchNo.drawingStyle = 3;
+confirmMatchNo.audio = ["uiError1"]
 confirmMatchNo.drawing = () => {
     let button = confirmMatchNo;
     alpha(menuScene.confirmYesNoAlpha)
@@ -421,8 +439,8 @@ confirmMatchNo.drawing = () => {
 }
 confirmMatchNo.callback = () => {
     confirmMatchNo.active = menuScene.showingConfirmButtons
-}
-confirmMatchNo.onclick = () => {
+    }
+    confirmMatchNo.onclick = () => {
     menuScene.showingConfirmButtons = false
     setTimeout(() => {
         menuScene.setCamTarget(mcTargetP5)
@@ -430,6 +448,7 @@ confirmMatchNo.onclick = () => {
 }
 let askConfirm = new button(280, -290, 100, 50, "Play!", "lime")
 askConfirm.drawingStyle = 3;
+askConfirm.audio = ["uiProg4"]
 askConfirm.drawing = () => {
     let button = askConfirm;
     curvedRect(button.x, button.y, button.width, button.height, button.color, 0, 3)
@@ -446,10 +465,12 @@ askConfirm.callback = () => {
     askConfirm.x = x
 }
 askConfirm.onclick = () => {
+    sfxSB.play("wooshR", true, 0.2, 0, 0.8)
     menuScene.showingConfirmButtons = true
 }
 let backToLocationSelect = new button(-300, -290, 50, 50, "", "orange")
 backToLocationSelect.drawingStyle = 3
+backToLocationSelect.audio = ["uiBack1"]
 backToLocationSelect.drawing = () => {
     let button = backToLocationSelect;
     let color = button.color
@@ -639,8 +660,10 @@ function createChosePlayerButton(player, team) {
     select.onclick = () => {
         if (menuScene.chosenOne != select) {
             menuScene.chosenOne = select
-        } else {
-            menuScene.chosenOne = null
+            sfxSB.play("uiAccept2", true)
+            } else {
+                menuScene.chosenOne = null
+                sfxSB.play("uiClose1", true)
         }
     }
     select.drawingStyle = 3
@@ -669,6 +692,7 @@ function createPlayerUnselectButton(player, team) {
         getTeamPlayerButtonCords(team)[1],
         79, 80, "", "red"
     )
+    UnselectButton.audio = ["uiClose1"]
     UnselectButton.team = team
     UnselectButton.player = player
     unselctButtonsArray.push(UnselectButton)

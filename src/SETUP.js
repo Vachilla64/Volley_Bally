@@ -24,9 +24,9 @@ physics.scale = 20
 physics.safeMode = false;
 
 
-function pointStartEvent() {
-    loadAudio();
-}
+// function pointStartEvent() {
+//     loadAudio();
+// }
 
 window.onerror = function () {
     mainLoop = NULLFUNCTION
@@ -39,7 +39,7 @@ function loadAudio() {
         sfxSB.autoLoad = false;
         sfxSB.fileSrcPrefix = "res/audio"
         musicSB.fileSrcPrefix = "res/audio/music"
-
+        
         musicSB.add("anticipation",   "anticipation.mp3");
         musicSB.add("resolution",     "resolution.mp3")
         musicSB.add("bg_music",       "pizz_on_the_beach.mp3", 0.6)
@@ -48,12 +48,12 @@ function loadAudio() {
         musicSB.add("kenGM",          "pizz_on_the_beach_susRush.mp3", 0.6)
         musicSB.add("photoPiano",     "EpianoEnd.mp3")
         musicSB.initialize();
-
+        
 
         sfxSB.add('ballHitGround',    "B.mp3")
         sfxSB.add("E",                "E.mp3")
         sfxSB.add("jump1",            "jump.wav", 0.4)
-        sfxSB.add("jump2",            "bfxr/jump12.wav", 0.8)
+        sfxSB.add("jump2",            "Jump12.wav", 0.8)
         sfxSB.add("woosh",            "woosh.mp3")
         sfxSB.add("throw1",           "throw1.mp3")
         sfxSB.add("throw2",           "throw2.mp3")
@@ -100,13 +100,33 @@ function loadAudio() {
         sfxSB.add("cam1",           "sfx/other/camera1.wav")
 
         // UI
-        sfxSB.add("uiClick1", "sfx/UI/slide1.wav")
-        sfxSB.add("uiClick2", "sfx/UI/slide2.wav")
-        sfxSB.add("uiClick3", "sfx/UI/slide3.wav")
-        sfxSB.add("uiClick4", "sfx/UI/waup.wav")
-        sfxSB.add("uiFail", "sfx/UI/nop.wav")
         sfxSB.add("uiWhip", "sfx/UI/whipy.wav")
-        sfxSB.add("uiBoop", "sfx/UI/boop.wav")
+        sfxSB.fileSrcPrefix = "res/audio/sfx/UI/SFX"
+        sfxSB.add("uiAccept1", "accept_1.wav")
+        sfxSB.add("uiAccept2", "accept_2.wav")
+        sfxSB.add("uiBack1", "back_1.wav")
+        sfxSB.add("uiClick1", "click_1.wav")
+        sfxSB.add("uiClick2", "click_2.wav")
+        sfxSB.add("uiClick2R", "click_2_R.wav")
+        sfxSB.add("uiClose1", "close_1.wav")
+        sfxSB.add("uiError1", "error_1.wav")
+        sfxSB.add("uiOpen1", "open_1.wav")
+        sfxSB.add("uiPop1", "pop_1.wav")
+        sfxSB.add("uiPop2", "pop_2.wav")
+        sfxSB.add("uiPop3", "pop_3.wav")
+        sfxSB.add("uiPop4", "pop_4.wav")
+        sfxSB.add("uiProg1", "prog_1.wav")
+        sfxSB.add("uiProg2", "prog_2.wav")
+        sfxSB.add("uiProg3", "prog_3.wav")
+        sfxSB.add("uiProg4", "prog_4.wav")
+        sfxSB.add("uiSwitch1", "switch_1.wav")
+        sfxSB.add("uiSwitch1R", "switch_1_R.wav")
+        sfxSB.add("uiSwitch2", "switch_2.wav")
+        sfxSB.add("uiSwitch2R", "switch_2_R.wav")
+        sfxSB.add("wfuhf", "wfuhf.wav")
+        sfxSB.add("wooshR", "woosh_R.wav")
+        sfxSB.add("wooshST1", "woosh_st_1.wav")
+        sfxSB.add("wooshST1R", "woosh_st_1_R.wav")
 
 
         sfxSB.initialize(true);
@@ -152,10 +172,10 @@ function loadImages() {
     // CaldroIH.addImage("beach", "Game_resources/a_new_game/images/beach24.png", 320, 180)
     CaldroIH.addImage("placeMask",     "res/images/placeMask.png", 960, 540)
     CaldroIH.addImage("mainBeach",     "res/images/mainBeach1.png", 960, 540)
-    CaldroIH.addImage("beach",         "res/images/Beach.png", 960, 540)
+    CaldroIH.addImage("beach",         "res/images/beach.png", 960, 540)
     CaldroIH.addImage("overArea1",     "res/images/overArea.png", 960, 540)
     CaldroIH.addImage("overArea2",     "res/images/overArea2.png", 960, 540)
-    CaldroIH.addImage("oceanBeach",    "res/images/Beach24.png", 960, 540)
+    CaldroIH.addImage("oceanBeach",    "res/images/beach24.png", 960, 540)
     CaldroIH.addImage("snowBeach",     "res/images/snowBeach.png", 960, 540)
     CaldroIH.addImage("kenBeach",      "res/images/kenBeach.png", 960, 540)
     CaldroIH.addImage("clareBeach",    "res/images/cloudBeach.png", 960, 540)

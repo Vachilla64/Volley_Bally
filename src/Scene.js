@@ -137,6 +137,7 @@ const SceneManager = {
         if (this.currentScene) {
             this.currentScene.render();
         }
+        Caldro.screen.showPointers()
         this.postRender();
     },
     startScene(targetScene) {
@@ -301,7 +302,7 @@ SceneManager.postRender = function () {
     if (SceneManager.currentScene.buttons) {
         for (let button of SceneManager.currentScene.buttons) {
             button.render();
-            if (pointIsIn(SceneManager.currentScene.camera.pointer, button, "box")) {
+            if (isMobileDevice()?button.selected:Caldro.screen.checkForPointerIn(button)) {
                 if (button.active && button.visible) {
                     if (!button.data["noHighlight"]) {
                         alpha(0.2)
@@ -344,7 +345,7 @@ SceneManager.postRender = function () {
             // if(colorUtils.sumTotal(colorToRGB(player.color)) > 600)
             // outlineCol = stylizedColors["outlines"]
             let outlineCol = stylizedColors["outlines"]
-            alpha(player.team == player.currentTeam?1:0.3)
+            alpha(player.team == player.currentTeam ? 1 : 0.3)
             shadow(0, stylizedColors["outlines"], 2, 2)
             CaldroSSM.draw(player.name.toLowerCase(), x, y, 40, 40, true, 0, player.gender)
             shadow(0)
@@ -410,7 +411,8 @@ SceneManager.postRender = function () {
             alpha(1)
             textOutline(10, stylizedColors["outlines"])
             txt("~Paused~", pw / 2, ph / 2, font(100), "white")
-            txt("press 'P' again to unpause", pw / 2, ph / 1.3, font(20), "white")
+            txt("Press 'P' again to unpause", pw / 2, ph / 1.3, font(20), "white")
+            txt("Press 'M' to return to Main Menu", pw / 2, ph / 1.4, font(20), "white")
             textOutline(0)
             // txt("~Paused~", x, y, font(100), "white")
             // txt("press 'P' again to unpause", x, y+(ph*(((ph/1.3)/ph))-0.5), font(20), "white")
@@ -453,49 +455,49 @@ SceneManager.postRender = function () {
                     let pText3 = "Perfect!";
                     let mainColor = "gold"
 
-                    let team1Score = teamManager.team1Score
-                    let team2Score = teamManager.team2Score
-                    let irlPlayer = teamManager.controlledPlayer
+                    // let team1Score = teamManager.team1Score
+                    // let team2Score = teamManager.team2Score
+                    // let irlPlayer = teamManager.controlledPlayer
 
-                    if (teamManager.sessionWinner == 0) {
-                        pText1 = "";
-                        pText2 = "";
-                        pText3 = "It's a Tie!";
-                        mainColor = "yellow"
-                    } else {
-                        if (team1Score == 0 || team2Score == 0) { // if a team got absolutely owned
-                            if (irlPlayer) {
-                                if (irlPlayer.team == teamManager.sessionWinner) {
-                                    pText1 = "Wow, that was"
-                                    pText2 = "...amazing!!"
-                                    pText3 = "Perfect!"
-                                    mainColor = "gold"
-                                } else {
-                                    pText1 = "Don't worry!, "
-                                    pText2 = "makes perfect, GG"
-                                    pText3 = "Practice"
-                                    mainColor = "orange"
-                                }
-                            } else {
+                    // if (teamManager.sessionWinner == 0) {
+                    //     pText1 = "";
+                    //     pText2 = "";
+                    //     pText3 = "It's a Tie!";
+                    //     mainColor = "yellow"
+                    // } else {
+                    //     if (team1Score == 0 || team2Score == 0) { // if a team got absolutely owned
+                    //         if (irlPlayer) {
+                    //             if (irlPlayer.team == teamManager.sessionWinner) {
+                    //                 pText1 = "Wow, that was"
+                    //                 pText2 = "...amazing!!"
+                    //                 pText3 = "Perfect!"
+                    //                 mainColor = "gold"
+                    //             } else {
+                    //                 pText1 = "Don't worry!, "
+                    //                 pText2 = "makes perfect, GG"
+                    //                 pText3 = "Practice"
+                    //                 mainColor = "orange"
+                    //             }
+                    //         } else {
 
-                                pText1 = "Perfect Win!!";
-                                pText2 = "";
-                                for (let i = 0; i < teamManager.winningTeam.length; ++i) {
-                                    let person = teamManager.winningTeam[i]
-                                    pText2 += person.name
-                                    if (teamManager.winningTeam.length > 1) {
-                                        if (i == teamManager.winningTeam.length - 1) {
-                                            pText1 += "and "
-                                        } else {
-                                            pText1 += ", "
-                                        }
-                                    }
-                                }
-                                pText3 = "Team " + teamManager.sessionWinner;
-                                mainColor = "lime"
-                            }
-                        }
-                    }
+                    //             pText1 = "Perfect Win!!";
+                    //             pText2 = "";
+                    //             for (let i = 0; i < teamManager.winningTeam.length; ++i) {
+                    //                 let person = teamManager.winningTeam[i]
+                    //                 pText2 += person.name
+                    //                 if (teamManager.winningTeam.length > 1) {
+                    //                     if (i == teamManager.winningTeam.length - 1) {
+                    //                         pText1 += "and "
+                    //                     } else {
+                    //                         pText1 += ", "
+                    //                     }
+                    //                 }
+                    //             }
+                    //             pText3 = "Team " + teamManager.sessionWinner;
+                    //             mainColor = "lime"
+                    //         }
+                    //     }
+                    // }
 
 
                     let x = currentCam.x;
@@ -630,8 +632,8 @@ SceneManager.postRender = function () {
             Sorientation = ""
             if (width > height) { // landscape
                 Sorientation = "landscape"
-                cw = height * (aspectRatio[0] / aspectRatio[1])
-                ch = height;
+                cw = (height * aspectRatio[0]) / aspectRatio[1];
+                ch = height
                 body.style.paddingLeft = body.style.paddingRight = `${(width - cw) / 2}px`
             } else { // potraint
                 Sorientation = "potrait"

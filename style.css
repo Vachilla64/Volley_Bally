@@ -3,7 +3,7 @@ body{
     user-select: none;
     margin:0px;
     padding: 0px;
-    background-color:white;
+    background-color:#0f141e;
 }
 
 #Main_Canvas_Container{
@@ -18,9 +18,6 @@ body{
     user-select: none;
     zoom: none;
     -webkit-user-drag: none;
-    /* background-color: ; */
+    /* rotate: 90deg; */
 }
-/* 
-aliceblue
-darkslategry
-fuchisia */
+

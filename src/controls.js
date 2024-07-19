@@ -82,6 +82,13 @@ GameKeys.addKey(-1, "p", () => {
     }
 })
 
+GameKeys.addKey(-1, 'm', () => {
+    if(mainGame.pausedByUser){
+        GameKeys.hitKey("p")
+        SceneManager.reloadCurrentScene();
+        SceneManager.startTransitionScreen(waitingSceneToMenuSceneTransition)
+    }
+})
 
 GameKeys.addKey(-1, 'x', () => {
     skipCutScene()
@@ -102,6 +109,43 @@ GameKeys.addKey(-1, "s", () => {
 })
 
 
+function updatePointers(){
+    let cam = SceneManager.currentScene.camera
+    if(isMobileDevice){
+        let pointers = new Array();
+        let scaledPointer = new Point2D(
+            (pointer.x * (pw / c.w)),
+            (pointer.y * (ph / c.h))
+        )
+    } else {
+        let scaledPointer = new Point2D(
+            (pointer.x * (pw / c.w)),
+            (pointer.y * (ph / c.h))
+        )
+        cam.updatePointer(scaledPointer)
+    }
+}
+
+function pointerAdjustment(point){
+    let paddingElement = window.document.body
+	// let paddingElement = event.target
+	// if(event.target.padding){
+		point.x -= parseFloat(paddingElement.style.paddingLeft)
+		point.y -= parseFloat(paddingElement.style.paddingTop)
+	// }
+    let scaledPointer = new Point2D(
+        (point.x * (pw / c.w)),
+        (point.y * (ph / c.h))
+    )
+    SceneManager.currentScene.camera.updatePointer(point)
+    SceneManager.currentScene.camera.updatePointer(scaledPointer)
+    place(point, SceneManager.currentScene.camera.pointer) 
+    // return point;
+	// point.x -= pw/2
+	// point.y -= ph/2
+}
+
+Caldro.screen.pointerAdjustment = pointerAdjustment
 
 function pointStartEvent() {
     let point = SceneManager.currentScene.camera.pointer
@@ -109,11 +153,18 @@ function pointStartEvent() {
 
     if (SceneManager.currentScene.buttons) {
         for (let button of SceneManager.currentScene.buttons) {
-            let check = button.listen(point);
+            let check = button.autoListen();
             if (check) {
-                // let data = button.data['audio']
-                // let sb = data.audioManager
-
+                let reducW = button.width/5
+                let reducH = button.height/5
+                button.width -= reducW
+                button.height -= reducH
+                if(!button.audio) continue;
+                if(sfxSB.initialized){
+                    let audio = choose(button.audio)
+                    sfxSB.stop(audio)
+                    sfxSB.play(audio, true, 0, 0)
+                }
                 break;
             }
         }
@@ -123,7 +174,13 @@ function pointStartEvent() {
 function pointEndEvent() {
     if (SceneManager.currentScene.buttons) {
         for (let button of SceneManager.currentScene.buttons) {
-            let check = button.stopListening()
+            let check = button.autoStopListening()
+            if(check){
+                let reducW = button.width/4
+                let reducH = button.height/4
+                button.width += reducW
+                button.height += reducH
+            }
         }
     }
     // planep1.deselect();
@@ -172,3 +229,5 @@ function setupDevcamControls(camera) {
         camera.x += camera.speed * (1 / camera.zoom) * Caldro.time.deltatime;
     })
 }
+
+// Caldro.events.forceMapPointerEventToWindow(window)

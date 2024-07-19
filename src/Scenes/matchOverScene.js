@@ -15,6 +15,7 @@ let viewPhotos = new button(250, 0, 200, 60, "View Images", "#73aa44", "white")
 viewPhotos.drawingStyle = 2
 viewPhotos.lineWidth = 6
 viewPhotos.fontSize = 25
+viewPhotos.active = false;
 viewPhotos.onclick = function(){
     moc.target.position = new Lvector2D(800, 0)
 }

@@ -103,7 +103,7 @@ beachBall.drawing = function () {
         CaldroCIM.draw(ctx, 'clareShine', x, y, radius * 3, radius * 3, true)
         glow(0)
         ctx.restore();
-        alpha(0.5)
+        alpha(1)
         CaldroSSM.draw("beachball", this.position.x, this.position.y, this.radius * 2, this.radius * 2, true, this.angle)
         alpha(0.7)
         CaldroCIM.draw(ctx, "clareShine", x, y, beachBall.radius * 4, beachBall.radius * 4, true)
@@ -111,6 +111,9 @@ beachBall.drawing = function () {
         glow(20)
         setImageSmoothing(ctx, false)
         glow(0)
+        alpha(0.3)
+        CaldroSSM.draw("beachball", this.position.x, this.position.y, this.radius * 2, this.radius * 2, true, this.angle)
+        alpha(1)
     } else {
         CaldroSSM.draw("beachball", this.position.x, this.position.y, this.radius * 2, this.radius * 2, true, this.angle)
     }

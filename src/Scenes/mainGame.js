@@ -345,9 +345,9 @@ maingameClosingScreenTasks.addAnimationNode(16.4, 1, () => {
         CaldroCIM.draw(Caldro.renderer.context, particle.shotID, particle.x, particle.y, w*particle.size, h*particle.size, true, particle.angle)
         // console.log(particle)
         stRect(particle.x, particle.y, w*particle.size, h*particle.size, "white", 8, particle.angle)
-    }, "", (particle)=>{
-        particle.shotID = shotID
-        particle.callback = () =>{
+        }, "", (particle)=>{
+            particle.shotID = shotID
+            particle.callback = () =>{
             let time = particle.lifeTime
             particle.x = endSCPicX.getValueAtTime(time) + 400
             particle.y = endSCPicY.getValueAtTime(time) + 225
@@ -355,6 +355,10 @@ maingameClosingScreenTasks.addAnimationNode(16.4, 1, () => {
         }
     })
 })
+maingameClosingScreenTasks.addAnimationNode(24, 1, () => {
+    SceneManager.startTransitionScreen(mainGameToMatchOverTransiiton)
+})
+maingameClosingScreenTasks.addAnimationNode(25, 1, () => {})
 
 
 function shot(ID, x, y, w, h){
@@ -381,18 +385,18 @@ maingameBlackoutCircleAnimation.addAnimationNode(21.68, 200, NULLFUNCTION, () =>
     // mainGame.blackoutClippingCircle.radius = approach(mainGame.blackoutClippingCircle.radius, 0, 12).value*
     mainGame.blackoutClippingCircle.radius = clip(mainGame.blackoutClippingCircle.radius - 500 * Caldro.time.deltatime, 0, Infinity)
 })
-maingameBlackoutCircleAnimation.addAnimationNode(24, 200, () => {
-    musicSB.play("photoPiano")
-}, AnimationGraph.SAMEASPREVIOUS)
+// maingameBlackoutCircleAnimation.addAnimationNode(24, 200, () => {
+    // musicSB.play("photoPiano")
+// }, AnimationGraph.SAMEASPREVIOUS)
 
 
 // IM COMING FOR YOU LATER....PROBABLY IN A MONTH, LMAO
 // transitions? done ig
 maingameBlackoutCircleAnimation.addAnimationNode(24, 200, () => {
     mainGame.showingClosingCutScene = false
-    SceneManager.startTransitionScreen(mainGameToMatchOverTransiiton)
 })
-
+    
+maingameBlackoutCircleAnimation.addAnimationNode(24, 200)
 
 
 

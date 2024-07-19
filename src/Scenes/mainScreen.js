@@ -18,6 +18,7 @@ let playGame = new button(0, 80, 150, 60, 'Play', "#a8cd57")
 playGame.drawingStyle = 2
 playGame.lineWidth = 7
 playGame.borderRadius = 5
+playGame.audio = ["uiAccept1"]
 playGame.onclick = function(){
     SceneManager.startTransitionScreen(mainScreenToMenuScreen);
 }

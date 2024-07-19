@@ -16,6 +16,7 @@ loadFilesButton.drawing = function () {
 
 loadFilesButton.onclick = () => {
     sfxSB.onInit = () => {
+        SceneManager.startTransitionScreen(loadToCaldroTransition)
         // SceneManager.startScene(trailerScreen)
         // SceneManager.startScene(tutorialScene)
         // SceneManager.startScene(lab)
@@ -28,7 +29,6 @@ loadFilesButton.onclick = () => {
         // }
         // SceneManager.startScene(mainScreen)
 
-        SceneManager.startTransitionScreen(loadToCaldroTransition)
     }
     loadAudio();
     loaderScreen.showingProgress = true;
@@ -40,12 +40,12 @@ PlayPong.drawing = function () {
     defaultButtonDrawing(this)
 }
 PlayPong.onclick = () => {
-    alert("No")
+    console.log("No, Load thie files :)")
 }
 
 let incase = new button(0, 85, 100, 40, "Continue..", "white", stylizedColors['outlines'])
 incase.drawingStyle = 3
-incase.active = false;
+incase.active = true;
 incase.textColor = stylizedColors["outlines"]
 incase.drawing = function () {
     let alph = 0;
@@ -75,6 +75,7 @@ loaderScreen.onLoad = () =>{
 loaderScreen.update = () => {
     world.step(Caldro.time.deltatime, 10)
 }
+
 loaderScreen.render = () => {
     let cnt = Caldro.renderer.context;
     Rect(0, 0, pw * 3, ph * 3, "white")
@@ -86,28 +87,13 @@ loaderScreen.render = () => {
     alpha(loaderScreen.bgAlpha)
     CaldroIH.draw("beach", 0, 0, pw, ph, true)
     alpha(1)
-    /* for(let i = 1; i <= 4; ++i){
-        let slant = 50
-        let width = pw/6
-        let x = ((pw/4)*i)-pw/2- width/2
-        let x1 = x - slant
-        let x2 = x + slant
-        
-        cnt.beginPath();
-        cnt.moveTo(x1-width/2, -ph/2)
-        cnt.lineTo(x1+width/2, -ph/2)
-        cnt.lineTo(x2+width/2, ph/2)
-        cnt.lineTo(x2-width/2, ph/2)
-        cnt.closePath();
-        fillColor(slantColors[i-1])
-        cnt.fill()
-    } */
+
     stRect(0, 0, pw * 0.9, ph * 0.9, "white", 2)
 
     let fnt = 20;
     let textColor = "white"
     textOutline(5 * loaderScreen.bgAlpha, stylizedColors["ablue"])
-    wrapText("Hey there Player! ^^\nThis game needs to download Audio and Image files to play...\nThe games isn't the same without them!\n\nAudio: 9 MB worth of files\nImages: 1 MB worth of files\n\nLoad these files?\nOr you can always just play later when you are ready!", 0, -150, pw * 0.7, fnt, textColor, font(fnt))
+    wrapText("Hey there Player! ^^\nThis game needs to download Audio and Image files to play...\nThe games isn't the same without them!\n\nAudio: 20 MB worth of files\nImages: 1 MB worth of files\n\nLoad these files?\nOr you can always just play later when you are ready!", 0, -150, pw * 0.7, fnt, textColor, font(fnt))
     textOutline(0)
     
     txt("*Not availble yet, sorry", 150, 120, font(12), "white")
